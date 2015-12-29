@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8580bd82955b1fbb80d47024e184056e",
-    "content-hash": "e1929a97e872bdbaacc8530468eccb67",
+    "hash": "04eac0bd4d8f06c0b8e378f08795acd9",
+    "content-hash": "24daafe49f22179199996db36532e4c7",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -151,6 +151,45 @@
                 "mask",
                 "plugins"
             ]
+        },
+        {
+            "name": "bower-asset/jquery.lazyload",
+            "version": "1.9.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tuupola/jquery_lazyload.git",
+                "reference": "218e50eb4999fe59ac94b939a65c8c988d1d420b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tuupola/jquery_lazyload/zipball/218e50eb4999fe59ac94b939a65c8c988d1d420b",
+                "reference": "218e50eb4999fe59ac94b939a65c8c988d1d420b",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "jquery.lazyload.js",
+                    "jquery.scrollstop.js"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "**/*.min.js",
+                    "**/*.html",
+                    "**/*.textile",
+                    "Gruntfile.js",
+                    "lazyload.jquery.json",
+                    "package.json",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "img"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "jQuery plugin for lazy loading images"
         },
         {
             "name": "bower-asset/punycode",
@@ -369,6 +408,50 @@
                 "mailer"
             ],
             "time": "2015-06-06 14:19:39"
+        },
+        {
+            "name": "toriphes/yii2-widget-lazyload",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/toriphes/yii2-widget-lazyload.git",
+                "reference": "3a4654ac9655f32888efc82fb7edf0da517d8995"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/toriphes/yii2-widget-lazyload/zipball/3a4654ac9655f32888efc82fb7edf0da517d8995",
+                "reference": "3a4654ac9655f32888efc82fb7edf0da517d8995",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery.lazyload": "~1.9",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "toriphes\\lazyload\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Giulio Ganci",
+                    "email": "giulioganci@gmail.com"
+                }
+            ],
+            "description": "wrapper of http://www.appelsiini.net/projects/lazyload jquery library",
+            "keywords": [
+                "extension",
+                "image",
+                "lazyload",
+                "widget",
+                "yii2"
+            ],
+            "time": "2015-11-24 19:26:57"
         },
         {
             "name": "yiisoft/yii2",
