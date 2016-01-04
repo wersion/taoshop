@@ -7,5 +7,27 @@ namespace common\component;
  * @author tao
  */
 class BackendBaseController extends BaseController{
-    //put your code here
+    
+    public function init() {
+        parent::init();
+    }
+    
+    public function behaviors() {
+        return [
+            'access'=>[
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login','register','error'],
+                        'allow' => true,
+                    ],
+                    [
+                      'actions' => ['*'],
+                       'allow'  => true,
+                       'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
 }

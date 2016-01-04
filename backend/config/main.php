@@ -11,12 +11,14 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'defaultRoute'=>'default/index',
+    'language'=>'zh-CN',
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['admin/login'],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

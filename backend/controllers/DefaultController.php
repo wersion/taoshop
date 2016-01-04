@@ -8,11 +8,16 @@
 
 namespace backend\controllers;
 use common\component\BackendBaseController;
+use yii\db\Query;
 /**
  * Description of DefaultController
  *
  * @author tao
  */
 class DefaultController extends BackendBaseController{
+    public $layout = 'main';
     
+    public function actionIndex(){
+        return $this->render('index');
+    }
 }

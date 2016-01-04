@@ -13,7 +13,7 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
         'log' => [
@@ -22,6 +22,14 @@ return [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
+                ],
+            ],
+        ],
+        'view'=>[
+            'theme'=> [
+                'pathMap' => [
+                    '@app/views' => '@app/themes/main',
+                    '@app/modules'=> '@app/themes/main/modules',
                 ],
             ],
         ],
