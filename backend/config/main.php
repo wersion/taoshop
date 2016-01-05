@@ -15,9 +15,12 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
-        'user' => [
-            'identityClass' => 'app\models\User',
+         'user' => [
+            'class'=>'common\component\WebUserD',
+            'identityClass' => 'backend\models\Admin',
             'enableAutoLogin' => true,
+            'idParam'=>'__admin',
+            'userType'=> 'admin',
             'loginUrl' => ['admin/login'],
         ],
         'log' => [

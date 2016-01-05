@@ -1,22 +1,25 @@
+<?php 
+use yii\helpers\Url;
+?>
 <script type="text/javascript">
         try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 </script>
 <div class="sidebar-shortcuts" id="sidebar-shortcuts">
                             <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-                                    <button class="btn btn-success">
-                                            <i class="ace-icon fa fa-signal"></i>
+                                <button class="btn btn-success" onclick="location.href='<?= Url::to('/default/index')?>'">
+                                            <i class="ace-icon fa fa-home"></i>
                                     </button>
 
-                                    <button class="btn btn-info">
-                                            <i class="ace-icon fa fa-pencil"></i>
+                                <button class="btn btn-info">
+                                            <i class="ace-icon fa fa-shopping-cart"></i>
                                     </button>
 
                                     <!-- #section:basics/sidebar.layout.shortcuts -->
-                                    <button class="btn btn-warning">
+                                    <button class="btn btn-warning" onclick="location.href='<?= Url::to('/user/list')?>'">
                                             <i class="ace-icon fa fa-users"></i>
                                     </button>
 
-                                    <button class="btn btn-danger">
+                                    <button class="btn btn-danger" onclick="location.href='<?= Url::to('/config/listedit')?>'">
                                             <i class="ace-icon fa fa-cogs"></i>
                                     </button>
 

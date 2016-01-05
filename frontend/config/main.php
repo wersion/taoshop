@@ -14,6 +14,8 @@ return [
     'components' => [
         'user' => [
             'identityClass' => 'app\models\User',
+            'identityCookie' => ['name' => '__user_identity', 'httpOnly' => true],
+            'idParam' => '__user',
             'enableAutoLogin' => true,
         ],
         'log' => [

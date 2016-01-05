@@ -1,6 +1,7 @@
 <?php
 namespace common\component;
 
+use common\component\UtilD;
 /**
  * backend of BackendBaseController
  *
@@ -10,24 +11,52 @@ class BackendBaseController extends BaseController{
     
     public function init() {
         parent::init();
+        $this->Permission();
     }
     
-    public function behaviors() {
-        return [
-            'access'=>[
-                'class' => \yii\filters\AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login','register','error'],
-                        'allow' => true,
-                    ],
-                    [
-                      'actions' => ['*'],
-                       'allow'  => true,
-                       'roles' => ['@'],
-                    ],
-                ],
-            ],
-        ];
+    /**
+     * 对访问的方法进行权限验证
+     */
+    protected function Permission(){
+        //Guest redrest login
+        $route = strtolower($this->getRouteAbsolute());
+        if(\Yii::$app->user->isGuest){
+            if (!in_array($route, \yii::$app->params['notNeedLogin'])){
+                 //判断是否是ajax访问
+                if (\Yii::$app->request->getIsAjax()){
+                    exit(UtilD::toJson(false,'未登录，无操作权限'));
+                }else{
+                    return $this->redirect('/admin/login', 302);
+                }
+            }
+        }
+    }
+    
+    
+    /**
+     * get full url
+     */
+    public function getRouteAbsolute(){
+        $route = $this->getRoute();
+        $actions = \yii::$app->request->getPathInfo();
+        
+        if(empty($actions)){
+            $actions = \yii::$app->defaultRoute;
+        }
+        
+        if(strlen($actions) < strlen($route)){
+            $actions = $this->getModules()->defaultRoute;
+        }
+        if ($route === $this->getUniqueId()){
+            if (strlen($actions) > strlen($route)){
+                return $actions;
+            }
+            else{
+                return $route .= '/'.$this->defaultAction;
+            }
+        }
+        else{
+            return $route;
+        }
     }
 }

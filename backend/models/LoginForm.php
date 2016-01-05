@@ -1,5 +1,5 @@
 <?php
-namespace common\models;
+namespace backend\models;
 
 use Yii;
 use yii\base\Model;
@@ -30,7 +30,19 @@ class LoginForm extends Model
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
-            ['cerifyCode','captcha'],
+            ['verifyCode','captcha','captchaAction'=>'/admin/captcha','message'=>'验证码错误'],
+        ];
+    }
+    
+    /**
+     * 
+     * @inheritdoc
+     */
+    public function attributeLabels() {
+        return [
+            'username' => 'Username or Email',
+            'password' => 'Password',
+            'rememberMe' => 'Remember Me',
         ];
     }
 
@@ -58,7 +70,7 @@ class LoginForm extends Model
      */
     public function login()
     {
-        $this->getAttributes();exit;
+       
         if ($this->validate()) {
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         } else {
@@ -74,7 +86,8 @@ class LoginForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = User::findByUsername($this->username);
+           // $this->_user = User::findByUsername($this->username);
+           $this->_user = Admin::findByUsername($this->username);
         }
 
         return $this->_user;

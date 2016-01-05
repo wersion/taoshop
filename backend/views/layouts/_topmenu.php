@@ -1,3 +1,6 @@
+<?php
+use yii\helpers\Url;
+?>
 <div id="navbar" class="navbar navbar-default">
             <script type="text/javascript">
                     try{ace.settings.check('navbar' , 'fixed')}catch(e){}
@@ -293,10 +296,10 @@
 						<!-- #section:basics/navbar.user_menu -->
 						<li class="light-blue">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
-								<img class="nav-user-photo" src="avatars/user.jpg" alt="Jason's Photo" />
+								<img class="nav-user-photo" src="/avatars/user.jpg" alt="Jason's Photo" />
 								<span class="user-info">
-									<small>Welcome,</small>
-									Jason
+									<small>欢迎回来,</small>
+									<?= yii::$app->user->username?>
 								</span>
 
 								<i class="ace-icon fa fa-caret-down"></i>
@@ -304,25 +307,25 @@
 
 							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 								<li>
-									<a href="#">
-										<i class="ace-icon fa fa-cog"></i>
-										Settings
+                                                                    <a href="<?= Url::to('/admin/cleancache'); ?>">
+										<i class="ace-icon fa fa-stop"></i>
+										清除缓存
 									</a>
 								</li>
 
 								<li>
 									<a href="profile.html">
 										<i class="ace-icon fa fa-user"></i>
-										Profile
+										账号设置
 									</a>
 								</li>
 
 								<li class="divider"></li>
 
 								<li>
-									<a href="#">
+                                                                    <a href="<?= Url::to('/admin/logout')?>">
 										<i class="ace-icon fa fa-power-off"></i>
-										Logout
+										注销
 									</a>
 								</li>
 							</ul>

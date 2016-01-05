@@ -4,7 +4,7 @@
             </script>
 
 <?= \yii\widgets\Breadcrumbs::widget([
-        'itemTemplate' => '<li><i class="icon-home home-icon"></i>{link}</li>',
+        'itemTemplate' => '<li><i class="ace-icon fa fa-home home-icon"> </i>{link}</li>',
         'links' => isset($this->params['breadcrumbs'])? $this->params['breadcrumbs'] : [],
         ])?>
 
