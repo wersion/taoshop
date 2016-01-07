@@ -9,7 +9,7 @@ use yii\helpers\Json;
  *
  * @author tao
  */
-class AreaLinkage extends Widget{
+class EditAreaLinkage extends Widget{
     
     //请求方式:frontend|backend区分请求接口
     public $type;
@@ -18,7 +18,7 @@ class AreaLinkage extends Widget{
     public $depth = 4;
     
     //初始值 101 中国
-    public $selectAreaCode = '101';
+    public $selectAreaCode;
     
     //前缀
     public $prefix = 'default_';
@@ -32,8 +32,12 @@ class AreaLinkage extends Widget{
 
     public function init() {
         parent::init();
+        $directCity = self::directCity();
+        if(!(strlen($this->selectAreaCode) > 3)){
+            throw new \yii\base\InvalidConfigException('配置参数错误');
+        }
         if(empty($this->type) || !in_array($this->type, ['frontend','backend'])){
-            throw new \yii\base\InvalidConfigException;
+            throw new \yii\base\InvalidConfigException('配置参数错误');
         }
         if ('backend' == $this->type){
             $this->url = 'areacode/get_areacode';
@@ -42,7 +46,7 @@ class AreaLinkage extends Widget{
     
     public function run(){
         $this->registerClientScript();
-        return $this->render('@common/widgets/area/views/arealinkage',[
+        return $this->render('@common/widgets/area/views/editarealinkage',[
             'depth'=>  $this->depth,
             'url'=>  $this->url,
             'prefix' => $this->prefix,
@@ -54,5 +58,12 @@ class AreaLinkage extends Widget{
     protected function registerClientScript(){
         $view = $this->getView();
        AreaLinkageAsset::register($view);
+    }
+    
+    /*
+     * 直辖市
+     */
+    private static function directCity(){
+        return [ '101101','101102','101103','101104','101132','101133','101134' ];
     }
 }

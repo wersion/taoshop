@@ -67,26 +67,13 @@ $area_json = ['101'=>'beijing','102'=>'gz','103'=>'sz'];
                                                 <div class="col-xs-12">
                                                     <form class="form-horizontal" role="form">
                                                             <div class="form-group">
-                                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-select-1"> 所在省份:</label>
-                                                                <div class="col-sm-1">
-                                                                    <!--<select class="form-control col-xs-1 col-sm-1" id="form-field-select-1">
-                                                                        <option value=""></option>
-                                                                        <option value="2" >北京</option>
-                                                                        <option value="3" >安徽</option>
-                                                                        <option value="4" >福建</option>
-                                                                        <option value="5" >甘肃</option>
-                                                                        <option value="6" selected>广东</option>
-                                                                        <option value="7" >广西</option>
-                                                                    </select>-->
+                                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-select-1"> 所在城市:</label>
+                                                                <div class="col-sm-3">
                                                                      <?php echo common\widgets\area\AreaLinkage::widget([
-                                                                        'name'=>'area_pro',
-                                                                        'areaData'=> $area_json,
-                                                                        'options'=>[
-                                                                            ['class'=>'form-control col-xs-1 col-sm-1 province','id'=>'province'],
-                                                                            ['class'=>'form-control col-xs-1 col-sm-1 city','id'=>'city'],
-                                                                            ['class'=>'form-control col-xs-1 col-sm-1 district','id'=>'district'],
-                                                                         ],
-                                                                    ]);?>
+                                                                             'type'=>'backend',
+                                                                             'prefix'=>'base_',
+                                                                             //'selectAreaCode'=>'101120103102',
+                                                                             ]);?>
                                                                 </div>
                                                                
                                                             </div>
@@ -113,10 +100,38 @@ $area_json = ['101'=>'beijing','102'=>'gz','103'=>'sz'];
                                                                     </div>
                                                             </div>
                                                          <div class="form-group">
-                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商店关键字: </label>
+                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-4"> 商店关键字: </label>
 
                                                                     <div class="col-sm-5">
-                                                                        <input type="text" id="form-field-1" placeholder="商店名称" name="value[101]" class="col-xs-10 col-sm-5" />
+                                                                        <input type="text" id="form-field-4" placeholder="商店名称" name="value[101]" class="col-xs-10 col-sm-5" />
+                                                                    </div>
+                                                            </div>
+                                                        <div class="form-group">
+                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 详细地址: </label>
+
+                                                                    <div class="col-sm-5">
+                                                                        <input type="text" id="form-field-5" placeholder="详细地址" name="value[101]" class="col-xs-10 col-sm-5" />
+                                                                    </div>
+                                                            </div>
+                                                        <div class="form-group">
+                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-6"> 客服QQ号码: </label>
+
+                                                                    <div class="col-sm-8">
+                                                                        <input type="text" id="form-field-6" placeholder="如果您有多个客服的QQ号码，请在每个号码之间使用半角逗号（,）分隔" name="value[101]" class="col-xs-10 col-sm-8" />
+                                                                    </div>
+                                                            </div>
+                                                        <div class="form-group">
+                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 详细地址: </label>
+
+                                                                    <div class="col-sm-5">
+                                                                        <input type="text" id="form-field-5" placeholder="详细地址" name="value[101]" class="col-xs-10 col-sm-5" />
+                                                                    </div>
+                                                            </div>
+                                                        <div class="form-group">
+                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 详细地址: </label>
+
+                                                                    <div class="col-sm-5">
+                                                                        <input type="text" id="form-field-5" placeholder="详细地址" name="value[101]" class="col-xs-10 col-sm-5" />
                                                                     </div>
                                                             </div>
                                                     </form> 

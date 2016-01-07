@@ -1,7 +1,6 @@
 <?php
 namespace common\component;
 
-use Yii;
 use yii\web\Controller;
 /**
  * base controller

@@ -17,5 +17,12 @@ class ConfigController extends BackendBaseController
     public function actionListedit(){
         return $this->render('listedit');
     }
+    
+    
+    public function actionTest(){
+        $model = new \common\models\Area();
+        $data = $model->FindAreaAll();
+        var_dump($data);exit;
+    }
 
 }
