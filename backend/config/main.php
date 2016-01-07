@@ -35,6 +35,14 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'i18n'=>[
+            'translations'=>[
+                'config'=>[
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath'=>'@backend/messages'
+                ]
+            ],
+        ],
     ],
     'params' => $params,
 ];

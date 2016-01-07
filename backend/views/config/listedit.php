@@ -1,4 +1,6 @@
 <?php
+use yii\helpers\Url;
+use yii\helpers\Html;
 $this->params['breadcrumbs'][] = '商店设置';
 $area_json = ['101'=>'beijing','102'=>'gz','103'=>'sz'];
 ?>
@@ -63,97 +65,95 @@ $area_json = ['101'=>'beijing','102'=>'gz','103'=>'sz'];
 
                                     <!-- /section:pages/faq -->
                                     <div class="tab-content no-border padding-24">
-                                            <div id="faq-tab-1" class="tab-pane fade in active">
-                                                <div class="col-xs-12">
-                                                    <form class="form-horizontal" role="form">
-                                                            <div class="form-group">
-                                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-select-1"> 所在城市:</label>
-                                                                <div class="col-sm-3">
-                                                                     <?php echo common\widgets\area\AreaLinkage::widget([
-                                                                             'type'=>'backend',
-                                                                             'prefix'=>'base_',
-                                                                             //'selectAreaCode'=>'101120103102',
-                                                                             ]);?>
-                                                                </div>
-                                                               
-                                                            </div>
-                                                            <div class="form-group">
-                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商店名称: </label>
-
-                                                                    <div class="col-sm-5">
-                                                                        <input type="text" id="form-field-1" placeholder="商店名称" name="value[101]" class="col-xs-10 col-sm-5" />
-                                                                    </div>
-                                                            </div>
-                                                         <div class="form-group">
-                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 商店标题: </label>
-
-                                                                    <div class="col-sm-5">
-                                                                        <input type="text" id="form-field-2" placeholder="商店标题" name="value[101]" class="col-xs-10 col-sm-5" />
-                                                                    </div>
-                                                            </div>
-                                                         <div class="form-group">
-                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 商店描述: </label>
-
-                                                                    <div class="col-sm-5">
-            
-                                                                        <textarea class="form-control" id="form-field-3" placeholder="商店描述:"></textarea>
-                                                                    </div>
-                                                            </div>
-                                                         <div class="form-group">
-                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-4"> 商店关键字: </label>
-
-                                                                    <div class="col-sm-5">
-                                                                        <input type="text" id="form-field-4" placeholder="商店名称" name="value[101]" class="col-xs-10 col-sm-5" />
-                                                                    </div>
-                                                            </div>
-                                                        <div class="form-group">
-                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 详细地址: </label>
-
-                                                                    <div class="col-sm-5">
-                                                                        <input type="text" id="form-field-5" placeholder="详细地址" name="value[101]" class="col-xs-10 col-sm-5" />
-                                                                    </div>
-                                                            </div>
-                                                        <div class="form-group">
-                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-6"> 客服QQ号码: </label>
-
-                                                                    <div class="col-sm-8">
-                                                                        <input type="text" id="form-field-6" placeholder="如果您有多个客服的QQ号码，请在每个号码之间使用半角逗号（,）分隔" name="value[101]" class="col-xs-10 col-sm-8" />
-                                                                    </div>
-                                                            </div>
-                                                        <div class="form-group">
-                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 详细地址: </label>
-
-                                                                    <div class="col-sm-5">
-                                                                        <input type="text" id="form-field-5" placeholder="详细地址" name="value[101]" class="col-xs-10 col-sm-5" />
-                                                                    </div>
-                                                            </div>
-                                                        <div class="form-group">
-                                                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 详细地址: </label>
-
-                                                                    <div class="col-sm-5">
-                                                                        <input type="text" id="form-field-5" placeholder="详细地址" name="value[101]" class="col-xs-10 col-sm-5" />
-                                                                    </div>
-                                                            </div>
-                                                    </form> 
-                                                </div>
-                                            </div>
-
-                                            <div id="faq-tab-2" class="tab-pane fade">
-                                                    2
-                                            </div>
-
-                                            <div id="faq-tab-3" class="tab-pane fade">
-                                                   3
-                                            </div>
-
-                                            <div id="faq-tab-4" class="tab-pane fade">
-                                                  4 
-                                            </div>
-                                            <div id="faq-tab-5" class="tab-pane fade">
-                                                  5 
-                                            </div>
-                                           
                                        
+                                        <?php foreach ($group_list as $key=>$group):?>
+                                        <div id="faq-tab-<?=$key?>" class="tab-pane fade<?php if ($key== 1):?> in active <?php endif;?>">
+                                            <form class="form-horizontal"  enctype="multipart/form-data" method="post" action="<?=  Url::to('/config/post')?>">
+                                                <input name="_csrf" type="hidden" id="_csrf" value="<?= Yii::$app->request->csrfToken ?>" />
+                                                 <div class="space-8"></div>
+                                                 <div id="faq-list-<?=$key?>" class="panel-group accordion-style1 accordion-style2">
+                                                     <?php if (isset($group['vars'])):?>
+                                                        <?php foreach ($group['vars'] as $k=>$var):?>
+                                                     <div class="form-group">
+                                                         <label class="col-sm-3 control-label no-padding-right" for="<?=$var['code']?>"> <?=$var['name']?>:</label>
+                                                         <div class="col-sm-3">
+                                                             <!-- -->
+                                                             <?php if ($var['type'] == 'text'):?>
+                                                                <input type="text" id="<?=$var['code']?>" placeholder="<?=$var['notice']?>" value="<?=$var['value']?>" name="value[<?=$var['id']?>]" class="col-xs-10 col-sm-5" />
+                                                             <?php elseif($var['type'] == 'textarea'):?>
+                                                                <textarea class="form-control" id="<?=$var['code']?>" placeholder="<?=$var['notice']?>" value="<?=$var['value']?>" name="value[<?=$var['id']?>]"></textarea>
+                                                             <?php elseif ($var['type'] == 'password'):?>
+                                                                <input type="password" id="<?=$var['code']?>" placeholder="<?=$var['notice']?>" class="col-xs-10 col-sm-5" value="<?=$var['value']?>" name="value[<?=$var['id']?>]"/>
+                                                             <?php elseif($var['type'] == 'select'): ?>   
+                                                                <div class="radio">
+                                                                    <?php foreach ($var['store_options'] as $sk=>$opt):?>
+                                                                    <label>
+                                                                            <input name="value[<?=$var['id']?>]" type="radio" class="ace" value="<?=$opt?>" <?php if ($var['value'] == $opt):?>checked="true"<?php endif;?>/>
+                                                                            <span class="lbl"> <?=$var['display_options'][$sk]?> </span>
+                                                                    </label>
+                                                                    <?php endforeach;?>
+								</div>
+                                                             <?php elseif ($var['type'] == 'options'):?>
+                                                                <select class="form-control" id="<?=$var['code']?>" name="value[<?=$var['id']?>]">
+									<?php foreach ($var['store_options'] as $sk=>$opt):?>
+                                                                    <option value="<?=$opt?>" <?php if($var['value'] == $opt):?>selected="selected"<?php endif;?>><?=$var['display_options'][$sk]?></option>
+                                                                        <?php endforeach;?>
+								</select>
+                                                                
+                                                             <?php elseif ($var['type'] == 'file'):?>
+                                                                  <input type="file" id="shop_logo" name="<?=$var['code']?>"/>
+                                                                  <script type="text/javascript">
+                                                                    jQuery(function($){
+                                                                       $('#shop_logo').ace_file_input({
+                                                                          style:'well',
+                                                                          no_file:'请选择图片',
+                                                                          btn_choose:'选择',
+                                                                          btn_change:'更换',
+                                                                          droppable:false,
+                                                                          onchange:null,
+                                                                          thumbnail:true, //| true | large
+                                                                          maxSize: 110000, //bytes
+                                                                          allowExt:["jpeg","jpg","png","gif"],
+                                                                          allowMime: ["image/jpg", "image/jpeg", "image/png", "image/gif"],
+                                                                      });
+                                                                    });
+
+                                                                    </script>
+                                                             <?php elseif ($var['type'] == 'city_code'):?>
+                                                                  <?php echo common\widgets\area\AreaLinkage::widget([
+											 'type'=>'backend',
+											 'prefix'=>'base_',
+											 'selectAreaCode'=>!empty($var['value'])?$var['value']:'',
+											 ]);?>
+                                                             <?php endif;?>
+                                                             <!-- -->
+                                                         </div>
+                                                     </div>
+                                                        <?php endforeach;?>
+                                                     <?php endif;?>
+                                                 </div>
+                                                 
+                                                 <div class="clearfix form-actions">
+                                                    <div class="col-md-offset-3 col-md-9">
+                                                        <button class="btn btn-info" type="submit">
+                                                         <i class="ace-icon fa fa-check bigger-110"></i>
+                                                         确定
+                                                         </button>
+
+                                                         &nbsp; &nbsp; &nbsp;
+                                                         <button class="btn" type="reset">
+                                                                 <i class="ace-icon fa fa-undo bigger-110"></i>
+                                                                  重置 
+                                                         </button>
+                                                    </div>
+                                                </div>
+                                                 <div style="height:10px;width: 100%"></div>
+                                            </form>
+                                        </div>
+                                        <?php endforeach;?>
+                                        <!-- tab content -->
+                                        
+                                        <!-- tab content end-->
                                     </div>
                             </div>
 

@@ -1,0 +1,23 @@
+<?php
+return [
+    'basic'=>'基本设置',
+    'shop_info'=>'商城信息',
+    'shopping_flow'=>'购物流程',
+    'shop_closed'=>'暂时关闭网站',
+    'shop_reg_closed'=>'是否关闭注册',
+    'shop_name'=>'商城名称',
+    'shop_title'=>'商城标题',
+    'shop_desc'=>'商城描述',
+    'shop_keywords'=>'商城关键字',
+    'shop_area_code'=>'所在地区',
+    'shop_address'=>'详细地址',
+    'shop_qq'=>' 客服QQ号码',
+    'shop_ww'=>'淘宝旺旺',
+    'shop_email'=>'客服邮件',
+    'shop_phone'=>'客服电话',
+    'shop_logo'=>'商城Logo',
+    'shop_closed_0'=>'否',
+    'shop_closed_1'=>'是',
+    'shop_reg_closed_0'=>'否',
+    'shop_reg_closed_1'=>'是',
+];
