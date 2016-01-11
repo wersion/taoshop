@@ -11,7 +11,7 @@ use yii\helpers\Url;
     <select class="district" name="<?=$prefix?>district" style="display: none">
             <option>请选择</option>
         </select>
-    <input type="hidden" name="<?=$prefix?>areaCode" id="<?=$prefix?>areaCode" />
+    <input type="hidden" name="<?=$name?>" id="<?=$prefix?>areaCode" />
 </div>
 
 <script type="text/javascript">

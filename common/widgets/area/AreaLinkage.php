@@ -23,6 +23,8 @@ class AreaLinkage extends Widget{
     //前缀
     public $prefix = 'default_';
     
+    public $name = '';
+    
     //获取地区接口
     private $url='';
     
@@ -46,7 +48,8 @@ class AreaLinkage extends Widget{
             'depth'=>  $this->depth,
             'url'=>  $this->url,
             'prefix' => $this->prefix,
-            'selectAreaCode' =>  $this->selectAreaCode
+            'selectAreaCode' =>  $this->selectAreaCode,
+            'name'=>  $this->name
              ]);
     }
     

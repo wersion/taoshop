@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-
+use common\component\UtilD;
 /**
  * This is the model class for table "{{%shop_config}}".
  *
@@ -19,6 +19,8 @@ use Yii;
  */
 class ShopConfig extends \yii\db\ActiveRecord
 {
+    const CACHE_KEY = 'shopconfig_key';
+
     /**
      * @inheritdoc
      */
@@ -118,5 +120,14 @@ class ShopConfig extends \yii\db\ActiveRecord
             }
         }
         return $group_list;
+    }
+    
+    
+    /*
+     * 清除缓存
+     */
+    public static function clearCache(){
+        $key = md5(self::CACHE_KEY."wholeVariable");
+        UtilD::setCache(__CLASS__, $key, false,-1);
     }
 }

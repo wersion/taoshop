@@ -40,6 +40,10 @@ return [
                 'config'=>[
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath'=>'@backend/messages'
+                ],
+                'log' => [
+                    'class'=> 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@backend/messages'
                 ]
             ],
         ],

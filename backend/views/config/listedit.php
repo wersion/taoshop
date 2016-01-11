@@ -101,10 +101,10 @@ $area_json = ['101'=>'beijing','102'=>'gz','103'=>'sz'];
 								</select>
                                                                 
                                                              <?php elseif ($var['type'] == 'file'):?>
-                                                                  <input type="file" id="shop_logo" name="<?=$var['code']?>"/>
+                                                                <input type="file" id="<?=$var['code']?>" name="<?=$var['code']?>" value=""/>
                                                                   <script type="text/javascript">
                                                                     jQuery(function($){
-                                                                       $('#shop_logo').ace_file_input({
+                                                                       $('#<?=$var['code']?>').ace_file_input({
                                                                           style:'well',
                                                                           no_file:'请选择图片',
                                                                           btn_choose:'选择',
@@ -122,9 +122,35 @@ $area_json = ['101'=>'beijing','102'=>'gz','103'=>'sz'];
                                                              <?php elseif ($var['type'] == 'city_code'):?>
                                                                   <?php echo common\widgets\area\AreaLinkage::widget([
 											 'type'=>'backend',
-											 'prefix'=>'base_',
+											 'prefix'=>'shop_',
+                                                                                         'name'=>'value['.$var['id'].']',
 											 'selectAreaCode'=>!empty($var['value'])?$var['value']:'',
 											 ]);?>
+                                                              <?php elseif ($var['type'] == 'manual'):?>
+                                                                    <?php if($var['code'] == 'invoice_type'):?>
+                                                                    <?php $var['value'] = unserialize($var['value']);?>
+                                                                    <table>
+                                                                        <tr>
+                                                                            <th scope="col"><?=  Yii::t('config', 'invoice_in_type')?></th>
+                                                                          <th scope="col"><?=  Yii::t('config', 'invoice_in_rate')?></th>
+                                                                        </tr>
+                                                                        
+                                                                        <tr>
+                                                                          <td><input name="invoice_type[]" type="text" value="<?= $var['value']['type'][0]?>" /></td>
+                                                                          <td><input name="invoice_rate[]" type="text" value="<?= $var['value']['rate'][0]?>" /></td>
+                                                                        </tr>
+                                                                        
+                                                                        <tr>
+                                                                          <td><input name="invoice_type[]" type="text" value="<?= $var['value']['type'][1]?>" /></td>
+                                                                          <td><input name="invoice_rate[]" type="text" value="<?= $var['value']['rate'][1]?>" /></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                          <td><input name="invoice_type[]" type="text" value="<?= $var['value']['type'][2]?>" /></td>
+                                                                          <td><input name="invoice_rate[]" type="text" value="<?= $var['value']['rate'][2]?>" /></td>
+                                                                        </tr>
+                                                                     </table>
+                                                                    
+                                                                    <?php endif;?>
                                                              <?php endif;?>
                                                              <!-- -->
                                                          </div>
