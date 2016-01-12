@@ -6,12 +6,40 @@ use yii\helpers\Url;
 
 class MenuController extends BackendBaseController
 {
-    public function actionIndex(){
-        echo 'asdf';
-    }
     public function actionGet() {
         $menu = [
             'menus'=>[
+                [
+                   'menuid' => '0',
+                    'icon' => 'icon-sys',
+                    'menuname'=>'系统设置',
+                    'menus' =>[
+                        [
+                            'menuid' =>'001',
+                            'menuname'=>'商城设置',
+                            'icon' => 'icon-sys',
+                            'url' => Url::to('/config/listedit')
+                        ],
+                        [
+                            'menuid' =>'002',
+                            'menuname'=>'支付方式',
+                            'icon' => 'icon-sys',
+                            'url' => Url::to('/payment/list')
+                        ],
+                        [
+                            'menuid' =>'003',
+                            'menuname'=>'配送方式',
+                            'icon' => 'icon-sys',
+                            'url' => Url::to('/shipping/list')
+                        ],
+                        [
+                            'menuid' =>'004',
+                            'menuname'=>'邮件服务器配置',
+                            'icon' => 'icon-sys',
+                            'url' => Url::to('/config/emailSettings')
+                        ],
+                    ] 
+                ],
                 [
                     'menuid'=>'1',
                     'icon'=>'icon-sys',

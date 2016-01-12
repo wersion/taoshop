@@ -5,24 +5,33 @@
 namespace backend\controllers;
 use common\component\BackendBaseController;
 use common\models\ShopConfig;
-use yii\db\Query;
 use common\component\UtilD;
 use common\models\AdminLog;
+use yii\filters\VerbFilter;
 
 class ConfigController extends BackendBaseController
 {
+    public $layout = "content";
     
-    public function actionIndex()
+    public function  behaviors()
     {
-        return $this->render('index');
+        return [
+            'verbs' =>[
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'listedit' => ['get'],
+                    'post'     => ['post'],
+                ]
+            ]
+        ];
     }
     
     
     public function actionListedit(){
         
-        //var_dump(unserialize('a:2:{s:4:"type";a:3:{i:0;s:1:"1";i:1;s:1:"2";i:2;s:0:"";}s:4:"rate";a:3:{i:0;d:1;i:1;d:1.5;i:2;d:0;}}'));exit;
         $group_list = ShopConfig::get_settigs([],[5]);
-        return $this->render('listedit',['group_list'=>$group_list]);
+        return $this->render('edit',['group_list'=>$group_list]);
+        //return $this->render('listedit',['group_list'=>$group_list]);
     }
     
     
@@ -31,11 +40,9 @@ class ConfigController extends BackendBaseController
      */
     public function actionPost(){
         $allow_file_types = ['jpg','jpeg','png','gif','bmp','swf'];
-        
         $values = \yii::$app->request->post('value',[]);
         /* 保存变量值 */
         $count = count($values);
-        
         $arr = [];
         $sql = "SELECT id,value FROM ".ShopConfig::tableName();
         $res = \yii::$app->db->createCommand($sql)->queryAll();
@@ -71,31 +78,32 @@ class ConfigController extends BackendBaseController
                     \yii::$app->end();
                 }
                 else{
+                    $file_path = \yii::getAlias('@static').DIRECTORY_SEPARATOR.$file_var_list[$code]['store_dir'];
                     //取得文件路径
                     if ($code == 'shop_logo'){
                         $ext = array_pop(explode('.', $file['name']));
-                        $file_name = \yii::getAlias('@static').DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'logo.'.$ext;
+                        $file_name = 'logo.'.$ext;
                     }
                     elseif ($code == 'watermark'){
                         $ext = array_pop(explode('.', $file['name']));
-                        $file_name = $file_var_list[$code]['store_dir'] . 'watermark.'.$ext;
+                        $file_name = 'watermark.'.$ext;
                         if (file_exists($file_var_list[$code]['value'])){
                             @unlink($file_var_list[$code]['value']);
                         }
                     }
                     elseif ($code == 'wap_logo'){
                         $ext = array_pop(explode('.', $file['name']));
-                        $file_name = $file_var_list[$code]['store_dir'].'wap.logo.'.$ext;
+                        $file_name = 'wap_logo.'.$ext;
                         if (file_exists($file_var_list[$code]['value'])){
                             @unlink($file_var_list[$code]['value']);
                         }
                     }
                     else{
-                        $file_name = $file_var_list[$code]['store_dir'].$file['name'];
+                        $file_name = $file['name'];
                                
                     }
                     /* 判断是否上传成功 */
-                    if(move_uploaded_file($file['tmp_name'], $file_name)){
+                    if(move_uploaded_file($file['tmp_name'], $file_path.$file_name)){
                         $sql = "UPDATE ".ShopConfig::tableName()." SET value='". $file_name."' WHERE code='".$code."'";
                         $rs = \yii::$app->db->createCommand($sql)->execute();
                     }

@@ -1,27 +1,35 @@
 /**
+ * jQuery EasyUI 1.4.2
+ * 
+ * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
+ *
+ * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
+ * To use it on other terms please contact us at info@jeasyui.com
+ *
+ */
+/**
  * tabs - jQuery EasyUI
  * 
- * Copyright (c) 2009-2013 www.jeasyui.com. All rights reserved.
- *
- * Licensed under the GPL or commercial licenses
- * To use it on other terms please contact us: info@jeasyui.com
- * http://www.gnu.org/licenses/gpl.txt
- * http://www.jeasyui.com/license_commercial.php
- *
  * Dependencies:
  * 	 panel
  *   linkbutton
  * 
  */
 (function($){
-	
+	function getContentWidth(c){
+		var w = 0;
+		$(c).children().each(function(){
+			w += $(this).outerWidth(true);
+		});
+		return w;
+	}
 	/**
 	 * set the tabs scrollers to show or not,
 	 * dependent on the tabs count and width
 	 */
 	function setScrollers(container) {
 		var opts = $.data(container, 'tabs').options;
-		if (opts.tabPosition == 'left' || opts.tabPosition == 'right'){return}
+		if (opts.tabPosition == 'left' || opts.tabPosition == 'right' || !opts.showHeader){return}
 		
 		var header = $(container).children('div.tabs-header');
 		var tool = header.children('div.tabs-tool');
@@ -36,10 +44,7 @@
 		}
 		tool._outerHeight(tHeight);
 		
-		var tabsWidth = 0;
-		$('ul.tabs li', header).each(function(){
-			tabsWidth += $(this).outerWidth(true);
-		});
+		var tabsWidth = getContentWidth(header.find('ul.tabs'));
 		var cWidth = header.width() - tool._outerWidth();
 		
 		if (tabsWidth > cWidth) {
@@ -116,23 +121,73 @@
 		}
 	}
 	
-	function setSize(container) {
+	function setSize(container, param) {
 		var state = $.data(container, 'tabs');
 		var opts = state.options;
 		var cc = $(container);
 		
-		opts.fit ? $.extend(opts, cc._fit()) : cc._fit(false);
-		cc.width(opts.width).height(opts.height);
-		
-		var header = $(container).children('div.tabs-header');
-		var panels = $(container).children('div.tabs-panels');
+		if (!opts.doSize){return}
+		if (param){
+			$.extend(opts, {
+				width: param.width,
+				height: param.height
+			});
+		}
+		cc._size(opts);
+
+		var header = cc.children('div.tabs-header');
+		var panels = cc.children('div.tabs-panels');
 		var wrap = header.find('div.tabs-wrap');
 		var ul = wrap.find('.tabs');
+		ul.children('li').removeClass('tabs-first tabs-last');
+		ul.children('li:first').addClass('tabs-first');
+		ul.children('li:last').addClass('tabs-last');
 		
-		for(var i=0; i<state.tabs.length; i++){
-			var p_opts = state.tabs[i].panel('options');
+		if (opts.tabPosition == 'left' || opts.tabPosition == 'right'){
+			header._outerWidth(opts.showHeader ? opts.headerWidth : 0);
+			panels._outerWidth(cc.width() - header.outerWidth());
+			header.add(panels)._outerHeight(opts.height);
+			wrap._outerWidth(header.width());
+			ul._outerWidth(wrap.width()).css('height','');
+		} else {
+			header.children('div.tabs-scroller-left,div.tabs-scroller-right,div.tabs-tool').css('display', opts.showHeader?'block':'none');
+			header._outerWidth(cc.width()).css('height','');
+			if (opts.showHeader){
+				header.css('background-color','');
+				wrap.css('height','');
+			} else {
+				header.css('background-color','transparent');
+				header._outerHeight(0);
+				wrap._outerHeight(0);
+			}
+			ul._outerHeight(opts.tabHeight).css('width','');
+			ul._outerHeight(ul.outerHeight()-ul.height()-1+opts.tabHeight).css('width','');
+			
+			panels._size('height', isNaN(opts.height) ? '' : (opts.height-header.outerHeight()));
+			panels._size('width', isNaN(opts.width) ? '' : opts.width);
+		}
+
+		if (state.tabs.length){
+			var d1 = ul.outerWidth(true) - ul.width();
+			var li = ul.children('li:first');
+			var d2 = li.outerWidth(true) - li.width();
+			var hwidth = header.width() - header.children('.tabs-tool')._outerWidth();
+			var justifiedWidth = Math.floor((hwidth-d1-d2*state.tabs.length)/state.tabs.length);
+			
+			$.map(state.tabs, function(p){
+				setTabSize(p, (opts.justified && $.inArray(opts.tabPosition,['top','bottom'])>=0) ? justifiedWidth : undefined);
+			});
+			if (opts.justified && $.inArray(opts.tabPosition,['top','bottom'])>=0){
+				var deltaWidth = hwidth - d1 - getContentWidth(ul);
+				setTabSize(state.tabs[state.tabs.length-1], justifiedWidth+deltaWidth);
+			}
+		}
+		setScrollers(container);
+
+		function setTabSize(p, width){
+			var p_opts = p.panel('options');
 			var p_t = p_opts.tab.find('a.tabs-inner');
-			var width = parseInt(p_opts.tabWidth || opts.tabWidth) || undefined;
+			var width = width ? width : (parseInt(p_opts.tabWidth||opts.tabWidth||undefined));
 			if (width){
 				p_t._outerWidth(width);
 			} else {
@@ -140,31 +195,7 @@
 			}
 			p_t._outerHeight(opts.tabHeight);
 			p_t.css('lineHeight', p_t.height()+'px');
-		}
-		if (opts.tabPosition == 'left' || opts.tabPosition == 'right'){
-			header._outerWidth(opts.headerWidth);
-			panels._outerWidth(cc.width() - opts.headerWidth);
-			header.add(panels)._outerHeight(opts.height);
-			wrap._outerWidth(header.width());
-			ul._outerWidth(wrap.width()).css('height','');
-		} else {
-			header._outerWidth(opts.width).css('height','');
-			ul._outerHeight(opts.tabHeight).css('width','');
-			
-			setScrollers(container);
-			
-			var height = opts.height;
-			if (!isNaN(height)) {
-				panels._outerHeight(height - header.outerHeight());
-			} else {
-				panels.height('auto');
-			}
-			var width = opts.width;
-			if (!isNaN(width)){
-				panels._outerWidth(width);
-			} else {
-				panels.width('auto');
-			}
+			p_t.find('.easyui-fluid:visible').triggerHandler('_resize');
 		}
 	}
 	
@@ -190,14 +221,12 @@
 	 */
 	function wrapTabs(container) {
 		var tabs = $.data(container, 'tabs').tabs;
-		var cc = $(container);
-		cc.addClass('tabs-container');
-		var pp = $('<div class="tabs-panels"></div>').insertBefore(cc);
+		var cc = $(container).addClass('tabs-container');
+		var panels = $('<div class="tabs-panels"></div>').insertBefore(cc);
 		cc.children('div').each(function(){
-			pp[0].appendChild(this);
+			panels[0].appendChild(this);
 		});
-		cc[0].appendChild(pp[0]);
-//		cc.wrapInner('<div class="tabs-panels"/>');
+		cc[0].appendChild(panels[0]);
 		$('<div class="tabs-header">'
 				+ '<div class="tabs-scroller-left"></div>'
 				+ '<div class="tabs-scroller-right"></div>'
@@ -210,9 +239,7 @@
 			var opts = $.extend({}, $.parser.parseOptions(this), {
 				selected: ($(this).attr('selected') ? true : undefined)
 			});
-			var pp = $(this);
-			tabs.push(pp);
-			createTab(container, pp, opts);
+			createTab(container, opts, $(this));
 		});
 		
 		cc.children('div.tabs-header').find('.tabs-scroller-left, .tabs-scroller-right').hover(
@@ -220,8 +247,7 @@
 				function(){$(this).removeClass('tabs-scroller-over');}
 		);
 		cc.bind('_resize', function(e,force){
-			var opts = $.data(container, 'tabs').options;
-			if (opts.fit == true || force){
+			if ($(this).hasClass('easyui-fluid') || force){
 				setSize(container);
 				setSelectedSize(container);
 			}
@@ -230,7 +256,8 @@
 	}
 	
 	function bindEvents(container){
-		var opts = $.data(container, 'tabs').options;
+		var state = $.data(container, 'tabs')
+		var opts = state.options;
 		$(container).children('div.tabs-header').unbind().bind('click', function(e){
 			if ($(e.target).hasClass('tabs-scroller-left')){
 				$(container).tabs('scrollBy', -opts.scrollIncrement);
@@ -238,13 +265,21 @@
 				$(container).tabs('scrollBy', opts.scrollIncrement);
 			} else {
 				var li = $(e.target).closest('li');
-				if (li.hasClass('tabs-disabled')){return;}
+				if (li.hasClass('tabs-disabled')){return false;}
 				var a = $(e.target).closest('a.tabs-close');
 				if (a.length){
 					closeTab(container, getLiIndex(li));
 				} else if (li.length){
-					selectTab(container, getLiIndex(li));
+//					selectTab(container, getLiIndex(li));
+					var index = getLiIndex(li);
+					var popts = state.tabs[index].panel('options');
+					if (popts.collapsible){
+						popts.closed ? selectTab(container, index) : unselectTab(container, index);
+					} else {
+						selectTab(container, index);
+					}
 				}
+				return false;
 			}
 		}).bind('contextmenu', function(e){
 			var li = $(e.target).closest('li');
@@ -292,6 +327,11 @@
 		} else {
 			header.removeClass('tabs-header-plain');
 		}
+		header.removeClass('tabs-header-narrow').addClass(opts.narrow?'tabs-header-narrow':'');
+		var tabs = header.find('.tabs');
+		tabs.removeClass('tabs-pill').addClass(opts.pill?'tabs-pill':'');
+		tabs.removeClass('tabs-narrow').addClass(opts.narrow?'tabs-narrow':'');
+		tabs.removeClass('tabs-justified').addClass(opts.justified?'tabs-justified':'');
 		if (opts.border == true){
 			header.removeClass('tabs-header-noborder');
 			panels.removeClass('tabs-panels-noborder');
@@ -299,14 +339,39 @@
 			header.addClass('tabs-header-noborder');
 			panels.addClass('tabs-panels-noborder');
 		}
+		opts.doSize = true;
 	}
 	
-	function createTab(container, pp, options) {
-		var state = $.data(container, 'tabs');
+	function createTab(container, options, pp) {
 		options = options || {};
+		var state = $.data(container, 'tabs');
+		var tabs = state.tabs;
+		if (options.index == undefined || options.index > tabs.length){options.index = tabs.length}
+		if (options.index < 0){options.index = 0}
+		
+		var ul = $(container).children('div.tabs-header').find('ul.tabs');
+		var panels = $(container).children('div.tabs-panels');
+		var tab = $(
+				'<li>' +
+				'<a href="javascript:void(0)" class="tabs-inner">' +
+				'<span class="tabs-title"></span>' +
+				'<span class="tabs-icon"></span>' +
+				'</a>' +
+				'</li>');
+		if (!pp){pp = $('<div></div>');}
+		if (options.index >= tabs.length){
+			tab.appendTo(ul);
+			pp.appendTo(panels);
+			tabs.push(pp);
+		} else {
+			tab.insertBefore(ul.children('li:eq('+options.index+')'));
+			pp.insertBefore(panels.children('div.panel:eq('+options.index+')'));
+			tabs.splice(options.index, 0, pp);
+		}
 		
 		// create panel
 		pp.panel($.extend({}, options, {
+			tab: tab,
 			border: false,
 			noheader: true,
 			closed: true,
@@ -317,42 +382,83 @@
 					options.onLoad.call(this, arguments);
 				}
 				state.options.onLoad.call(container, $(this));
+			},
+			onBeforeOpen: function(){
+				if (options.onBeforeOpen){
+					if (options.onBeforeOpen.call(this) == false){return false;}
+				}
+				var p = $(container).tabs('getSelected');
+				if (p){
+					if (p[0] != this){
+						$(container).tabs('unselect', getTabIndex(container, p));
+						p = $(container).tabs('getSelected');
+						if (p){
+							return false;
+						}
+					} else {
+						setSelectedSize(container);
+						return false;
+					}
+				}
+				
+				var popts = $(this).panel('options');
+				popts.tab.addClass('tabs-selected');
+				// scroll the tab to center position if required.
+				var wrap = $(container).find('>div.tabs-header>div.tabs-wrap');
+				var left = popts.tab.position().left;
+				var right = left + popts.tab.outerWidth();
+				if (left < 0 || right > wrap.width()){
+					var deltaX = left - (wrap.width()-popts.tab.width()) / 2;
+					$(container).tabs('scrollBy', deltaX);
+				} else {
+					$(container).tabs('scrollBy', 0);
+				}
+				
+				var panel = $(this).panel('panel');
+				panel.css('display','block');
+				setSelectedSize(container);
+				panel.css('display','none');
+			},
+			onOpen: function(){
+				if (options.onOpen){
+					options.onOpen.call(this);
+				}
+				var popts = $(this).panel('options');
+				state.selectHis.push(popts.title);
+				state.options.onSelect.call(container, popts.title, getTabIndex(container, this));
+			},
+			onBeforeClose: function(){
+				if (options.onBeforeClose){
+					if (options.onBeforeClose.call(this) == false){return false;}
+				}
+				$(this).panel('options').tab.removeClass('tabs-selected');
+			},
+			onClose: function(){
+				if (options.onClose){
+					options.onClose.call(this);
+				}
+				var popts = $(this).panel('options');
+				state.options.onUnselect.call(container, popts.title, getTabIndex(container, this));
 			}
 		}));
 		
-		var opts = pp.panel('options');
-		
-		var tabs = $(container).children('div.tabs-header').find('ul.tabs');
-		
-		opts.tab = $('<li></li>').appendTo(tabs);	// set the tab object in panel options
-		opts.tab.append(
-				'<a href="javascript:void(0)" class="tabs-inner">' +
-				'<span class="tabs-title"></span>' +
-				'<span class="tabs-icon"></span>' +
-				'</a>'
-		);
-		
+		// only update the tab header
 		$(container).tabs('update', {
 			tab: pp,
-			options: opts
+			options: pp.panel('options'),
+			type: 'header'
 		});
 	}
 	
 	function addTab(container, options) {
-		var opts = $.data(container, 'tabs').options;
-		var tabs = $.data(container, 'tabs').tabs;
+		var state = $.data(container, 'tabs');
+		var opts = state.options;
 		if (options.selected == undefined) options.selected = true;
 		
-		var pp = $('<div></div>').appendTo($(container).children('div.tabs-panels'));
-		tabs.push(pp);
-		createTab(container, pp, options);
-		
-		opts.onAdd.call(container, options.title, tabs.length-1);
-		
-//		setScrollers(container);
-		setSize(container);
+		createTab(container, options);
+		opts.onAdd.call(container, options.title, options.index);
 		if (options.selected){
-			selectTab(container, tabs.length-1);	// select the added tab panel
+			selectTab(container, options.index);	// select the added tab panel
 		}
 	}
 	
@@ -360,74 +466,85 @@
 	 * update tab panel, param has following properties:
 	 * tab: the tab panel to be updated
 	 * options: the tab panel options
+	 * type: the update type, possible values are: 'header','body','all'
 	 */
 	function updateTab(container, param){
+		param.type = param.type || 'all';
 		var selectHis = $.data(container, 'tabs').selectHis;
 		var pp = param.tab;	// the tab panel
-		var oldTitle = pp.panel('options').title; 
-		pp.panel($.extend({}, param.options, {
-			iconCls: (param.options.icon ? param.options.icon : undefined)
-		}));
+		var oldTitle = pp.panel('options').title;
 		
-		var opts = pp.panel('options');	// get the tab panel options
-		var tab = opts.tab;
-		
-		var s_title = tab.find('span.tabs-title');
-		var s_icon = tab.find('span.tabs-icon');
-		s_title.html(opts.title);
-		s_icon.attr('class', 'tabs-icon');
-		
-		tab.find('a.tabs-close').remove();
-		if (opts.closable){
-			s_title.addClass('tabs-closable');
-			$('<a href="javascript:void(0)" class="tabs-close"></a>').appendTo(tab);
-		} else{
-			s_title.removeClass('tabs-closable');
+		if (param.type == 'all' || param == 'body'){
+			pp.panel($.extend({}, param.options, {
+				iconCls: (param.options.icon ? param.options.icon : undefined)
+			}));
 		}
-		if (opts.iconCls){
-			s_title.addClass('tabs-with-icon');
-			s_icon.addClass(opts.iconCls);
-		} else {
-			s_title.removeClass('tabs-with-icon');
-		}
-		
-		if (oldTitle != opts.title){
-			for(var i=0; i<selectHis.length; i++){
-				if (selectHis[i] == oldTitle){
-					selectHis[i] = opts.title;
+		if (param.type == 'all' || param.type == 'header'){
+			var opts = pp.panel('options');	// get the tab panel options
+			var tab = opts.tab;
+			
+			if (opts.header){
+				tab.find('.tabs-inner').html($(opts.header));
+			} else {
+				var s_title = tab.find('span.tabs-title');
+				var s_icon = tab.find('span.tabs-icon');
+				s_title.html(opts.title);
+				s_icon.attr('class', 'tabs-icon');
+				
+				tab.find('a.tabs-close').remove();
+				if (opts.closable){
+					s_title.addClass('tabs-closable');
+					$('<a href="javascript:void(0)" class="tabs-close"></a>').appendTo(tab);
+				} else{
+					s_title.removeClass('tabs-closable');
+				}
+				if (opts.iconCls){
+					s_title.addClass('tabs-with-icon');
+					s_icon.addClass(opts.iconCls);
+				} else {
+					s_title.removeClass('tabs-with-icon');
+				}
+				if (opts.tools){
+					var p_tool = tab.find('span.tabs-p-tool');
+					if (!p_tool.length){
+						var p_tool = $('<span class="tabs-p-tool"></span>').insertAfter(tab.find('a.tabs-inner'));
+					}
+					if ($.isArray(opts.tools)){
+						for(var i=0; i<opts.tools.length; i++){
+							var t = $('<a href="javascript:void(0)"></a>').appendTo(p_tool);
+							t.addClass(opts.tools[i].iconCls);
+							if (opts.tools[i].handler){
+								t.bind('click', {handler:opts.tools[i].handler}, function(e){
+									if ($(this).parents('li').hasClass('tabs-disabled')){return;}
+									e.data.handler.call(this);
+								});
+							}
+						}
+					} else {
+						$(opts.tools).children().appendTo(p_tool);
+					}
+					var pr = p_tool.children().length * 12;
+					if (opts.closable) {
+						pr += 8;
+					} else {
+						pr -= 3;
+						p_tool.css('right','5px');
+					}
+					s_title.css('padding-right', pr+'px');
+				} else {
+					tab.find('span.tabs-p-tool').remove();
+					s_title.css('padding-right', '');
 				}
 			}
-		}
-		
-		tab.find('span.tabs-p-tool').remove();
-		if (opts.tools){
-			var p_tool = $('<span class="tabs-p-tool"></span>').insertAfter(tab.find('a.tabs-inner'));
-			if ($.isArray(opts.tools)){
-				for(var i=0; i<opts.tools.length; i++){
-					var t = $('<a href="javascript:void(0)"></a>').appendTo(p_tool);
-					t.addClass(opts.tools[i].iconCls);
-					if (opts.tools[i].handler){
-						t.bind('click', {handler:opts.tools[i].handler}, function(e){
-							if ($(this).parents('li').hasClass('tabs-disabled')){return;}
-							e.data.handler.call(this);
-						});
+			if (oldTitle != opts.title){
+				for(var i=0; i<selectHis.length; i++){
+					if (selectHis[i] == oldTitle){
+						selectHis[i] = opts.title;
 					}
 				}
-			} else {
-				$(opts.tools).children().appendTo(p_tool);
 			}
-			var pr = p_tool.children().length * 12;
-			if (opts.closable) {
-				pr += 8;
-			} else {
-				pr -= 3;
-				p_tool.css('right','5px');
-			}
-			s_title.css('padding-right', pr+'px');
 		}
 		
-//		setProperties(container);
-//		setScrollers(container);
 		setSize(container);
 		
 		$.data(container, 'tabs').options.onUpdate.call(container, opts.title, getTabIndex(container, pp));
@@ -517,7 +634,7 @@
 		var tabs = $.data(container, 'tabs').tabs;
 		for(var i=0; i<tabs.length; i++){
 			var tab = tabs[i];
-			if (tab.panel('options').closed == false){
+			if (tab.panel('options').tab.hasClass('tabs-selected')){
 				return tab;
 			}
 		}
@@ -528,59 +645,50 @@
 	 * do first select action, if no tab is setted the first tab will be selected.
 	 */
 	function doFirstSelect(container){
-		var tabs = $.data(container, 'tabs').tabs;
+		var state = $.data(container, 'tabs')
+		var tabs = state.tabs;
 		for(var i=0; i<tabs.length; i++){
 			if (tabs[i].panel('options').selected){
 				selectTab(container, i);
 				return;
 			}
 		}
-		if (tabs.length){
-			selectTab(container, 0);
-		}
+//		if (tabs.length){
+//			selectTab(container, 0);
+//		}
+		selectTab(container, state.options.selected);
 	}
 	
 	function selectTab(container, which){
-		var opts = $.data(container, 'tabs').options;
-		var tabs = $.data(container, 'tabs').tabs;
-		var selectHis = $.data(container, 'tabs').selectHis;
-		
-		if (tabs.length == 0) return;
-		
-		var panel = getTab(container, which); // get the panel to be activated
-		if (!panel) return;
-		
-		var selected = getSelectedTab(container);
-		if (selected){
-			selected.panel('close');
-			selected.panel('options').tab.removeClass('tabs-selected');
+		var p = getTab(container, which);
+		if (p && !p.is(':visible')){
+			stopAnimate(container);
+			p.panel('open');
 		}
-		
-		panel.panel('open');
-		var title = panel.panel('options').title;	// the panel title
-		selectHis.push(title);	// push select history
-		
-		var tab = panel.panel('options').tab;	// get the tab object
-		tab.addClass('tabs-selected');
-		
-		// scroll the tab to center position if required.
-		var wrap = $(container).find('>div.tabs-header>div.tabs-wrap');
-		var left = tab.position().left;
-		var right = left + tab.outerWidth();
-		if (left < 0 || right > wrap.width()){
-			var deltaX = left - (wrap.width()-tab.width()) / 2;
-			$(container).tabs('scrollBy', deltaX);
-		} else {
-			$(container).tabs('scrollBy', 0);
+	}
+	
+	function unselectTab(container, which){
+		var p = getTab(container, which);
+		if (p && p.is(':visible')){
+			stopAnimate(container);
+			p.panel('close');
 		}
-		
-		setSelectedSize(container);
-		
-		opts.onSelect.call(container, title, getTabIndex(container, panel));
+	}
+
+	function stopAnimate(container){
+		$(container).children('div.tabs-panels').each(function(){
+			$(this).stop(true, true);
+		});
 	}
 	
 	function exists(container, which){
 		return getTab(container, which) != null;
+	}
+	
+	function showHeader(container, visible){
+		var opts = $.data(container, 'tabs').options;
+		opts.showHeader = visible;
+		$(container).tabs('resize');
 	}
 	
 	
@@ -592,10 +700,8 @@
 		options = options || {};
 		return this.each(function(){
 			var state = $.data(this, 'tabs');
-			var opts;
 			if (state) {
-				opts = $.extend(state.options, options);
-				state.options = opts;
+				$.extend(state.options, options);
 			} else {
 				$.data(this, 'tabs', {
 					options: $.extend({},$.fn.tabs.defaults, $.fn.tabs.parseOptions(this), options),
@@ -616,14 +722,18 @@
 	
 	$.fn.tabs.methods = {
 		options: function(jq){
-			return $.data(jq[0], 'tabs').options;
+			var cc = jq[0];
+			var opts = $.data(cc, 'tabs').options;
+			var s = getSelectedTab(cc);
+			opts.selected = s ? getTabIndex(cc, s) : -1;
+			return opts;
 		},
 		tabs: function(jq){
 			return $.data(jq[0], 'tabs').tabs;
 		},
-		resize: function(jq){
+		resize: function(jq, param){
 			return jq.each(function(){
-				setSize(this);
+				setSize(this, param);
 				setSelectedSize(this);
 			});
 		},
@@ -651,6 +761,11 @@
 				selectTab(this, which);
 			});
 		},
+		unselect: function(jq, which){
+			return jq.each(function(){
+				unselectTab(this, which);
+			});
+		},
 		exists: function(jq, which){
 			return exists(jq[0], which);
 		},
@@ -667,6 +782,16 @@
 		disableTab: function(jq, which){
 			return jq.each(function(){
 				$(this).tabs('getTab', which).panel('options').tab.addClass('tabs-disabled');
+			});
+		},
+		showHeader: function(jq){
+			return jq.each(function(){
+				showHeader(this, true);
+			});
+		},
+		hideHeader: function(jq){
+			return jq.each(function(){
+				showHeader(this, false);
 			});
 		},
 		scrollBy: function(jq, deltaX){	// scroll the tab header by the specified amount of pixels
@@ -690,8 +815,10 @@
 	
 	$.fn.tabs.parseOptions = function(target){
 		return $.extend({}, $.parser.parseOptions(target, [
-			'width','height','tools','toolPosition','tabPosition',
-			{fit:'boolean',border:'boolean',plain:'boolean',headerWidth:'number',tabWidth:'number',tabHeight:'number'}
+			'tools','toolPosition','tabPosition',
+			{fit:'boolean',border:'boolean',plain:'boolean'},
+			{headerWidth:'number',tabWidth:'number',tabHeight:'number',selected:'number'},
+			{showHeader:'boolean',justified:'boolean',narrow:'boolean',pill:'boolean'}
 		]));
 	};
 	
@@ -701,9 +828,14 @@
 		headerWidth: 150,	// the tab header width, it is valid only when tabPosition set to 'left' or 'right' 
 		tabWidth: 'auto',	// the tab width
 		tabHeight: 27,		// the tab height
+		selected: 0,		// the initialized selected tab index
+		showHeader: true,
 		plain: false,
 		fit: false,
 		border: true,
+		justified: false,
+		narrow: false,
+		pill: false,
 		tools: null,
 		toolPosition: 'right',	// left,right
 		tabPosition: 'top',		// possible values: top,bottom
@@ -711,6 +843,7 @@
 		scrollDuration: 400,
 		onLoad: function(panel){},
 		onSelect: function(title, index){},
+		onUnselect: function(title, index){},
 		onBeforeClose: function(title, index){},
 		onClose: function(title, index){},
 		onAdd: function(title, index){},

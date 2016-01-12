@@ -56,3 +56,30 @@ textarea{border:1px solid #95B8E7;}
     width: 100%; 
     margin: 15px 0px;
 }
+.breadBar {
+    background: #F4FAFB;
+    border: 1px solid #BBDDE5;
+    color: #9CACAF;
+    font-size: 14px;
+    padding: 7px 10px;
+    margin: 10px;
+    overflow: hidden;
+	display: block;
+    font-size: 2em;
+    -webkit-margin-before: 0.67em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+.breadBar .breadcrumb{
+	width:100%;
+	height:auto;
+	margin:0;
+	padding:0
+}
+.breadBar .breadcrumb li{
+	float:left;
+	list-style:none;
+	margin-left:10px
+}

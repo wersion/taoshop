@@ -1,6 +1,7 @@
 <?php
 return [
     'basic'=>'基本设置',
+    'display'=>'显示设置',
     'shop_info'=>'商城信息',
     'shopping_flow'=>'购物流程',
     'shop_closed'=>'暂时关闭网站',

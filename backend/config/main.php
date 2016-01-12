@@ -37,13 +37,31 @@ return [
         ],
         'i18n'=>[
             'translations'=>[
-                'config'=>[
+                '*' =>[
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath'=>'@backend/messages'
-                ],
-                'log' => [
-                    'class'=> 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@backend/messages'
+                    'basePath'=> '@backend/messages',
+                    'fileMap' => [
+                        'config' => 'config.php',
+                        'app'    => 'app.php',
+                        'log'    => 'log.php',
+                        'alipay'=> 'payment/alipay.php',
+                        'bank'=>'payment/bank.php',
+                        'paypal_ec'=>'payment/paypal_ec.php',
+                        'kuaiqian'=>'payment/kuaiqian.php',
+                        'paypal'=>'payment/paypal.php',
+                        'cappay'=>'payment/cappay.php',
+                        'ips'=>'payment/ips.php',
+                        'wx_new_jspay'=>'payment/wx_new_jspay.php',
+                        'wx_new_qrcode'=>'payment/wx_new_qrcode.php',
+                        'cod'=>'payment/cod.php',
+                        'shenzhou'=>'payment/shenzhou.php',
+                        'tenpay'=>'payment/tenpay.php',
+                        'post'=>'payment/post.php',
+                        'balance'=>'payment/balance.php',
+                        'chinabank'=>'payment/chinabank.php',
+                        'upop'=>'payment/upop.php',
+                        'tenpayc2c'=>'payment/tenpayc2c.php',
+                    ]
                 ]
             ],
         ],

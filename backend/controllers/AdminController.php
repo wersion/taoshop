@@ -11,6 +11,7 @@ namespace backend\controllers;
 use yii;
 use common\component\BackendBaseController;
 use backend\models\LoginForm;
+use yii\web\View;
 /**
  * Description of AdminController
  *
@@ -40,6 +41,8 @@ class AdminController extends BackendBaseController {
         if (!\Yii::$app->user->isGuest){
             return $this->goHome();
         }
+        
+        $this->getView()->title = "taoShop商城管理系统";
        return $this->render('login');
     }
     
@@ -54,7 +57,6 @@ class AdminController extends BackendBaseController {
         $model->rememberMe = isset($_POST['rememberMe']) && $_POST['rememberMe']=='on'? true: false;
         $model->verifyCode = $_POST['verifyCode'];
         
-        var_dump($model->login());exit;
         if ($model->login()){
             return $this->goHome();
         }

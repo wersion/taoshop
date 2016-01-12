@@ -11,7 +11,7 @@ LoginAsset::register($this);
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="zh_cn" />
 	<?= Html::csrfMetaTags()?>
-	<title><?= Html::encode($this->title);?></title> 
+	<title><?= Html::encode($this->title);?> -- 登录</title> 
     <?php $this->head() ?>
 </head>
 <body>

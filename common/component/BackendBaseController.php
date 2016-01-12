@@ -8,9 +8,11 @@ use common\component\UtilD;
  * @author tao
  */
 class BackendBaseController extends BaseController{
+    public $layout = 'content';
     
     public function init() {
         parent::init();
+        $this->getView()->title = \Yii::$app->id;
         $this->Permission();
     }
     

@@ -1,0 +1,20 @@
+<?php
+return [
+    'ips'=>'环迅IPS',
+    'ips_desc'=>'IPS(www.ips.com)账户是上海环迅于2005年推出的新一代基于电子邮件的互联网多币种收付款工具。',
+    'ips_account'=>'IPS商户号',
+    'ips_key'=>'IPS证书',
+    'ips_currency'=>'支付方式',
+    'ips_currency_range_01'=>'借记卡',
+    'ips_currency_range_02'=>'信用卡',
+    'ips_currency_range_04'=>'IPS账户支付',
+    'ips_currency_range_08'=>'I币支付',
+    'ips_currency_range_16'=>'电话支付',
+    'ips_lang'=>'语言',
+    'ips_lang_range_GB'=>'GB中文',
+    'ips_lang_range_EN'=>'英语',
+    'ips_lang_range_BIG5'=>'BIG5中文',
+    'ips_lang_range_JP'=>'JP',
+    'ips_lang_range_FR'=>'FR',
+    'pay_button'=>'立即使用IPS支付',
+];

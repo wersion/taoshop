@@ -1,6 +1,5 @@
 <?php 
 use yii\captcha\Captcha;
-use yii\helpers\Html;
 use yii\helpers\Url;
 ?> 
 <style>

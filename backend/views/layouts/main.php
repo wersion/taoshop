@@ -10,8 +10,7 @@ AppAsset::register($this);
 <!DOCTYPE html>
 <html lang="<?=Yii::$app->language?>">
     <head>
-        <meta charset="<?= Yii::$app->charset ?>"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=<?=Yii::$app->language?>" />
         <meta name="language" content="<?php echo Yii::$app->language;?>" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">

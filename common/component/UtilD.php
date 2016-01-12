@@ -1,5 +1,6 @@
 <?php
 namespace common\component;
+use yii\helpers\FileHelper;
 /**
  * help tools
  *
@@ -252,5 +253,26 @@ class UtilD {
        }
 
        return $format;
+   }
+   
+   
+   public static function read_modules($directory = '.') {
+       $dir = @opendir($directory);
+       $set_modules = true;
+       $modules = [];
+       while (false !== ($file = @readdir($dir))){
+           if (preg_match("/^.*?\.php$/", $file))
+           {
+               include_once($directory. '/' .$file);
+           }
+       }
+       @closedir($dir);
+       unset($set_modules);
+       foreach ($modules AS $key => $value)
+       {
+           ksort($modules[$key]);
+       }
+       ksort($modules);
+       return $modules;
    }
 }
