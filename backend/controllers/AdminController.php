@@ -17,7 +17,7 @@ use backend\models\LoginForm;
  * @author tao
  */
 class AdminController extends BackendBaseController {
-    public $layout = false;
+    public $layout = 'login';
     
     
     public function actions() {
@@ -44,7 +44,7 @@ class AdminController extends BackendBaseController {
     }
     
     
-    public function actionLoginpost(){
+    public function actionPost(){
         if (!\Yii::$app->request->getIsPost()){
             throw new yii\base\InvalidCallException("无效请求");
         }
@@ -54,6 +54,7 @@ class AdminController extends BackendBaseController {
         $model->rememberMe = isset($_POST['rememberMe']) && $_POST['rememberMe']=='on'? true: false;
         $model->verifyCode = $_POST['verifyCode'];
         
+        var_dump($model->login());exit;
         if ($model->login()){
             return $this->goHome();
         }
@@ -72,5 +73,9 @@ class AdminController extends BackendBaseController {
     public function actionCleancache(){
         \yii::$app->cache->gc(true,false);
         return $this->goHome();
+    }
+    
+    public function actionResetpwd() {
+        exit('正在疯狂施工中...');
     }
 }

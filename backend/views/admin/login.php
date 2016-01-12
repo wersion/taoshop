@@ -1,141 +1,128 @@
-<?php
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \common\models\LoginForm */
+<?php 
+use yii\captcha\Captcha;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\assets\LoginAsset;
-use backend\assets\Ie9HeadAsset;
-use backend\assets\Ie8HeadAsset;
-use yii\captcha\Captcha;
-use yii\widgets\ActiveForm;
-
-LoginAsset::register($this);
-Ie9HeadAsset::register($this);
-Ie8HeadAsset::register($this);
-?>
-<?php $this->beginPage(); ?>
-<!DOCTYPE html>
-<html lang="<?= yii::$app->language;?>">
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta charset="utf-8" />
-        
-        <title><?=yii::$app->id?> Login</title>
-
-        <meta name="description" content="管理员登录" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-        <?= Html::csrfMetaTags()?>
-        <?php $this->head() ?>
-        <style type="html/css">
-            .left{float: left}
-        </style>
-    </head>
-    <body class="login-layout blur-login">
-        <?php $this->beginBody() ?>
-       
-        <div class="main-container">
-                <div class="main-content">
-                        <div class="row">
-                                <div class="col-sm-10 col-sm-offset-1">
-                                        <div class="login-container">
-                                                <div class="center">
-                                                        <h1>
-                                                                <i class="ace-icon fa fa-leaf green"></i>
-                                                                <span class="red">taoshop</span>
-                                                                <span class="white" id="id-text2">管理员登录</span>
-                                                        </h1>
-                                                </div>
-
-                                                <div class="space-6"></div>
-
-                                                <div class="position-relative">
-                                                            <div id="login-box" class="login-box visible widget-box no-border">
-                                                                    <div class="widget-body">
-                                                                        <div class="widget-main">
-                                                                            <h4 class="header blue lighter bigger">
-                                                                                    <i class="ace-icon fa fa-coffee green"></i>
-                                                                                    请输入您的账号和密码
-                                                                            </h4>
-
-                                                                            <div class="space-6"></div>
-
-                                                                            <form id="loginForm" method="post" action="<?= Url::to(['admin/loginpost'])?>">
-                                                                                <input name="_csrf" type="hidden" id="_csrf" value="<?= Yii::$app->request->csrfToken ?>">
-                                                                                <fieldset>
-                                                                                    <label class="block clearfix">
-                                                                                            <span class="block input-icon input-icon-right">
-                                                                                                <input type="text" class="form-control" placeholder="账号" name="username" id="username"/>
-                                                                                                    <i class="ace-icon fa fa-user"></i>
-                                                                                            </span>
-                                                                                    </label>
-
-                                                                                    <label class="block clearfix">
-                                                                                            <span class="block input-icon input-icon-right">
-                                                                                                <input type="password" class="form-control" placeholder="密码" name="password"/>
-                                                                                                    <i class="ace-icon fa fa-lock"></i>
-                                                                                            </span>
-                                                                                    </label>
-
-                                                                                    <label>
-                                                                                        <span class="block clearfix">
-                                                                                            <input type="text" class="form-control" placeholder="验证码" name="verifyCode" style="width:100px;float: left"/>
-                                                                                            <?php echo Captcha::widget([ 
-                                                                                                'name'=>'verifyCode',
-                                                                                                'captchaAction'=>'admin/captcha',
-                                                                                                'imageOptions'=>[
-                                                                                                    'alt'=>'验证码',
-                                                                                                    'style'=>'cursor:pointer;float:left',
-                                                                                                    ],
-                                                                                                'template'=>"{image}",
-                                                                                              ])?>
-                                                                                        </span>
-                                                                                    </label>
-
-                                                                                    <div class="space"></div>
-
-                                                                                    <div class="clearfix">
-                                                                                            <label class="inline">
-                                                                                                    <input type="checkbox" class="ace" name="rememberMe"/>
-                                                                                                    <span class="lbl"> 记住我</span>
-                                                                                            </label>
-
-                                                                                            <button type="button" class="width-35 pull-right btn btn-sm btn-primary" onclick="submitForm()">
-                                                                                                    <i class="ace-icon fa fa-key"></i>
-                                                                                                    <span class="bigger-110">立即登录</span>
-                                                                                            </button>
-                                                                                    </div>
-
-                                                                                    <div class="space-4"></div>
-                                                                                    </fieldset>
-                                                                                </form>
-                                                                        </div><!-- /.widget-main -->
-
-
-                                                                    </div><!-- /.widget-body -->
-                                                        </div><!-- /.login-box -->
-                                                </div><!-- /.position-relative -->
-                                        </div>
-                                </div><!-- /.col -->
-                        </div><!-- /.row -->
-			</div><!-- /.main-content -->
-		</div><!-- /.main-container -->
-        <script type="text/javascript">
-                if('ontouchstart' in document.documentElement) document.write("<script src='<?= Yii::getAlias('@web')?>/js/jquery.mobile.custom.js'>"+"<"+"/script>");
-        </script>
-         <script type="text/javascript">
-                function submitForm(){
-                   var name = $('#username').val();
-                   var pwd  = $('#password').val();
-                   var code = $('#verifyCode').val();
-                   if (name=='' || pwd == '' || code == ''){
-                       return false;
-                   }
-                   $("#loginForm").submit();
-                }
+?> 
+<style>
+<!--
+body{
+        margin:0px;
+        padding:0px;
+        font-size:12px;
+    	background:#fff
+    }
+    .loginBox{
+        width:1000px;
+        height:574px;
+        margin:0 auto;
+        position:relative;
+    	background:#fff
+    }
+    .loginCon{
+        padding-top:210px;
+        _padding-top:200px;
+    }
+    .inputText{
+        height:28px;
+        line-height:28px;
+        border:1px solid #ccc;
+    }
+    .loginBtn{
+        background: url('../images/loginBtn1.gif') no-repeat left top;
+        width:144px;
+        height:50px;
+        display:block;
+    }
+    .loginBtn:hover{
+        background: url('../images/loginBtn2.gif') no-repeat left top;
+    }
+-->
+</style>		
+<div id="dlg"  class="loginBox">
+    <div class="loginCon">
+	    <form id="ff" method="post" >
+	     <input name="_csrf" type="hidden" id="_csrf" value="<?= Yii::$app->request->csrfToken ?>" />
+	    	<table style="width:330px;margin:0 auto;">
+	    		<tr>
+	    			<td style="padding-bottom:15px;padding-right: 10px;font-weight: bold; width:45;text-align: right;">帐<span style="display: inline-block;height:1px;width:1em;"></span>号 :</td>
+	    			<td  style="padding-bottom:15px;"><input class="easyui-validatebox inputText" style="width:185px;" type="text" id="username" name="username" data-options="required:true,validType:'length[5,30]'" value=""></input>
+	    			</td>
+	    		</tr>
+	    		<tr>
+                            <td style="padding-bottom:15px;padding-right: 10px;font-weight: bold; width:45;text-align: right;">密<span style="display: inline-block;height:1px;width:1em;"></span>码 :</td>
+	    			<td  style="padding-bottom:15px;"><input style="width:185px;" class="inputText easyui-validatebox" type="password" id="password" name="password" data-options="required:true,validType:'length[6,30]'"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td style="padding-bottom:15px;padding-right: 10px;font-weight: bold; width:45;text-align: right;">验证码 :</td>
+	    			<td  style="padding-bottom:15px;">
+	    			 <input class="easyui-validatebox inputText" placeholder="验证码" name="verifyCode" id="verifyCode" style="width:100px;float: left"/>
+                        <?php echo Captcha::widget([ 
+                            'name'=>'verifyCode',
+                            'captchaAction'=>'admin/captcha',
+                            'imageOptions'=>[
+                                'alt'=>'验证码',
+                                'style'=>'cursor:pointer;float:left',
+                                ],
+                            'template'=>"{image}",
+                          ])?>
+	    			</td>
+	    		</tr>
+                        <tr>
+                            <td style="padding-bottom:15px;padding-right: 10px;font-weight: bold; width:45;text-align: right;">&nbsp;</td>
+	    			<td  style="padding-bottom:15px;"><a href="javascript:void(0)" class="loginBtn" onclick="submitForm()"></a>	 </td>
+	    		</tr>
+	    	</table>
+	    </form>
+	    </div>
+	</div>
+<div class="footer">
+    <p style="margin-top:38px;text-align: center;">Copyright ©　创扬科技  2015 - <?php echo date('Y',time());?> All Right Reserved</p>
+</div>
+	<script type="text/javascript">
+        var ua = (/(msie) ([\w.]+)/.exec(navigator.userAgent.toLowerCase())),isIE7=false;
+        if(document.all && (ua[2]=="6.0")){
+                    isIE7=true;
+                    $.messager.alert('提示','您当前使用的浏览器版本过低，请升级到IE7及其以上版本或者使用Chrome、Firefox等浏览器！');
+        }
+        var enterKey=true;
+        $("body").bind('keyup',function(event){
+                 if(isIE7) return false;
+                 if(event.keyCode==13 && enterKey){
+                     submitForm();
+                 }
+                 enterKey=true;
+	 	})
+		function submitForm(){
+                if(isIE7) return false;
+                $('#ff').form('submit',{ 
+        			url: '<?= Url::to('/admin/post')?>',  
+        			onSubmit: function(){
+        				if(!$(this).form('validate')) {
+            				return false;
+            			};
+                        if($('#verifyCode').val() == '' || $('#verifyCode').val().length != 4){
+                                    $.messager.alert('错误提示', '请输入4位字符的验证码！','info',function(){
+                                      enterKey=false;
+                                    })
+                                    $("#password").val('');
+        							return false;
+                        }
+                        return true;
+        			},  
+        			success: function(result){  
+        				var result = eval('('+result+')');  
+        				if (result.key){  
+        					window.top.location = '<?=Url::to('/')?>';
+        				} else {  
+        					$("#password").val('');
+        					$.messager.show({  
+        						title: '错误提示',  
+        						msg: result.keyMain
+        					});
+        					$('#refresh_a').click();
+        				}  
+        			}  
+      		});
+		}  
+		
 	</script>
-        <?php $this->endBody();?>
-       
-    </body>
-</html>
-<?php $this->endPage()?>

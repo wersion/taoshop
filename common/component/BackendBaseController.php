@@ -18,7 +18,6 @@ class BackendBaseController extends BaseController{
      * 对访问的方法进行权限验证
      */
     protected function Permission(){
-        //Guest redrest login
         $route = strtolower($this->getRouteAbsolute());
         if(\Yii::$app->user->isGuest){
             if (!in_array($route, \yii::$app->params['notNeedLogin'])){

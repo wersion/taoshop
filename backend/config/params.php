@@ -5,9 +5,11 @@ return [
     'notNeedLogin' => [
         'admin/login',
         'admin/captcha',
+        'admin/post',
         
     ],
     'dataCache' => [
         'default' => ['cacheid'=>'cache'],
     ],
+    'adminpassportkey'=>'7c9ea6d6afbd3d043b0cf50a4ea78239',
 ];
