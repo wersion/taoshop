@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 ?>
 <table id="listdata"  class="easyui-datagrid" title="支付列表" 
-				data-options="toolbar: '#tb-user',rownumbers:true,singleSelect:true,pagination:true,url:'<?= Url::to('/payment/ajax-get')?>' ">
+				data-options="rownumbers:true,singleSelect:true,pagination:true,url:'<?= Url::to('/payment/ajax-get')?>' ">
 			<thead>
 				<tr>
 					<th data-options="field:'name',width:200,align:'center'">支付方式名称</th>

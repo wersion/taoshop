@@ -27,7 +27,7 @@ class BackendBaseController extends BaseController{
                 if (\Yii::$app->request->getIsAjax()){
                     exit(UtilD::toJson(false,'未登录，无操作权限'));
                 }else{
-                    return $this->redirect('/admin/login', 302);
+                    return $this->redirect('/admin/login');
                 }
             }
         }

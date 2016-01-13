@@ -265,7 +265,7 @@ class PaymentController extends BackendBaseController
         if ($sta){
             AdminLog::admin_log($code, 'uninstall','payment');
         }
-        $this->redirect(Url::to('/payment/list'));
+        $this->redirect('/payment/list');
     }
     
     
