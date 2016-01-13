@@ -14,6 +14,7 @@ use yii\db\Query;
  * @property string $pay_fee
  * @property string $pay_desc
  * @property integer $pay_order
+ * @property string $pay_config
  * @property integer $enabled
  * @property integer $is_cod
  * @property integer $is_online
@@ -40,7 +41,8 @@ class Payment extends \yii\db\ActiveRecord
             [['pay_order', 'enabled', 'is_cod', 'is_online', 'create_time'], 'integer'],
             [['pay_code'], 'string', 'max' => 16],
             [['pay_name'], 'string', 'max' => 127],
-            [['pay_desc'], 'string', 'max' => 512]
+            [['pay_desc'], 'string', 'max' => 512],
+            [['pay_config'],'string','max' => 1024]
         ];
     }
 
@@ -56,6 +58,7 @@ class Payment extends \yii\db\ActiveRecord
             'pay_fee' => Yii::t('app', 'Pay Fee'),
             'pay_desc' => Yii::t('app', 'Pay Desc'),
             'pay_order' => Yii::t('app', 'Pay Order'),
+            'pay_config'=> \Yii::t('app', 'pay Config'),
             'enabled' => Yii::t('app', 'Enabled'),
             'is_cod' => Yii::t('app', 'Is Cod'),
             'is_online' => Yii::t('app', 'Is Online'),
@@ -80,5 +83,15 @@ class Payment extends \yii\db\ActiveRecord
             }
         }
         return $result;
+    }
+    
+    /**
+     * 卸载支付方式
+     * @param string $code
+     * @return \yii\db\integer
+     */
+    public static function uninstall($code){
+        $sql = 'UPDATE '.self::tableName()." SET enabled = 0 WHERE pay_code='{$code}' LIMIT 1";
+        return \yii::$app->getDb()->createCommand($sql)->execute();
     }
 }

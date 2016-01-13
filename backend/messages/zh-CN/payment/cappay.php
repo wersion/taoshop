@@ -5,6 +5,7 @@ return [
     'cappay_account' => '商户编号',
     'cappay_key' => 'MD5支付密钥',
     'cappay_currency' => '支付货币',
+    'cappay_currency_range'=>['人民币','美元'],
     'cappay_currency_range_0' => '人民币',
     'cappay_currency_range_1' => '美元',
     'cappay_button' => '首信易支付平台',

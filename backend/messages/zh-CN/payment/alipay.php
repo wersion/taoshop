@@ -8,7 +8,9 @@ return [
     'pay_button' => '立即使用支付宝支付',
     'alipay_pay_method' => '选择接口类型',
     'alipay_pay_method_desc' => '请选择您最后一次跟支付宝签订的协议里面说明的接口类型',
-    'alipay_pay_method_range_0' => '使用标准双接口',
-    'alipay_pay_method_range_1' => '使用担保交易接口',
-    'alipay_pay_method_range_2' => '使用即时到帐交易接口',
+    'alipay_pay_method_range' => [
+        0=>'使用标准双接口',
+        1=>'使用担保交易接口',
+        2=>'使用即时到帐交易接口',
+    ],
 ];

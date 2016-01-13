@@ -59,7 +59,7 @@ class AdminLog extends \yii\db\ActiveRecord
     * @param   string      $content    操作的内容
     * @return  void
     */
-    public static function admin_log($action,$content,$sn='')
+    public static function admin_log($sn='',$action,$content)
     {
         $log_info = \yii::t('log', $action) . \yii::t('log', $content) . ":".Html::encode($sn);
         $time = time();
