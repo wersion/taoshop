@@ -61,6 +61,19 @@ return [
                         'chinabank'=>'payment/chinabank.php',
                         'upop'=>'payment/upop.php',
                         'tenpayc2c'=>'payment/tenpayc2c.php',
+                        //配送
+                        'cac' =>'shipping/cac.php',
+                        'city_express' =>'shipping/city_express.php',
+                        'ems' =>'shipping/ems.php',
+                        'flat' =>'shipping/flat.php',
+                        'fpd' =>'shipping/fpd.php',
+                        'post_express' =>'shipping/post_express.php',
+                        'post_mail' =>'shipping/post_mail.php',
+                        'presswork' =>'shipping/presswork.php',
+                        'sf_express' =>'shipping/sf_express.php',
+                        'sto_express' =>'shipping/sto_express.php',
+                        'yto' =>'shipping/yto.php',
+                        'zto' =>'shipping/zto.php',
                     ]
                 ]
             ],

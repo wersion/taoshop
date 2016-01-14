@@ -1,6 +1,6 @@
 <?php
 namespace common\component;
-use yii\helpers\FileHelper;
+
 /**
  * help tools
  *
@@ -274,5 +274,97 @@ class UtilD {
        }
        ksort($modules);
        return $modules;
+   }
+   
+   /**
+    * 返回$rows中所有行中第一列
+    * @param array $rows
+    */
+   public static function getCol($rows) {
+       $cols = [];
+       if (!is_array($rows) || !count($rows)) return $cols;
+       foreach ($rows as $val){
+           $cols[] = $val['id'];
+       }
+       return $cols;
+   }
+   
+   
+   
+   /**
+    * 创建像这样的查询: "IN('a','b')";
+    *
+    * @access   public
+    * @param    mix      $item_list      列表数组或字符串
+    * @param    string   $field_name     字段名称
+    *
+    * @return   void
+    */
+   public static function db_create_in($item_list, $field_name = '')
+   {
+       if (empty($item_list))
+       {
+           return $field_name . " IN ('') ";
+       }
+       else
+       {
+           if (!is_array($item_list))
+           {
+               $item_list = explode(',', $item_list);
+           }
+           $item_list = array_unique($item_list);
+           $item_list_tmp = '';
+           foreach ($item_list AS $item)
+           {
+               if ($item !== '')
+               {
+                   $item_list_tmp .= $item_list_tmp ? ",'$item'" : "'$item'";
+               }
+           }
+           if (empty($item_list_tmp))
+           {
+               return $field_name . " IN ('') ";
+           }
+           else
+           {
+               return $field_name . ' IN (' . $item_list_tmp . ') ';
+           }
+       }
+   }
+   
+   /**
+    * 判断是否为默认安装快递单背景图片
+    *
+    * @param   string      $print_bg      快递单背景图片路径名
+    * @access  private
+    *
+    * @return  Bool
+    */
+   public static function is_print_bg_default($print_bg)
+   {
+       $_bg = basename($print_bg);
+       $_bg_array = explode('.', $_bg);
+       if (count($_bg_array) != 2)
+       {
+           return false;
+       }
+       if (strpos('|' . $_bg_array[0], 'dly_') != 1)
+       {
+           return false;
+       }
+       $_bg_array[0] = ltrim($_bg_array[0], 'dly_');
+       $list = explode('|', SHIP_LIST);
+       if (in_array($_bg_array[0], $list))
+       {
+           return true;
+       }
+       return false;
+   }
+   
+   /*
+    * 获取文件后缀
+    */
+   public static function getFileSuffix($file_name){
+       return strtolower(array_pop(explode('.', $file_name)));
    }
 }

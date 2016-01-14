@@ -3,7 +3,8 @@
 namespace common\models;
 
 use Yii;
-
+use common\component\UtilD;
+define('SHIP_LIST', 'cac|city_express|ems|flat|fpd|post_express|post_mail|presswork|sf_express|sto_express|yto|zto');
 /**
  * This is the model class for table "{{%shipping}}".
  *
@@ -68,5 +69,48 @@ class Shipping extends \yii\db\ActiveRecord
             'shipping_order' => Yii::t('app', 'Shipping Order'),
             'create_time' => Yii::t('app', 'Create Time'),
         ];
+    }
+    
+    /*
+     * 卸载配送方式
+     */
+    public function uninstall($code) {
+        $row = (new \yii\db\Query())
+            ->select(['id','shipping_name','print_bg'])
+            ->from(self::tableName())
+            ->where(['shipping_code'=>$code])
+            ->limit(1)
+            ->one();
+        if (!$row) return true;
+        $shipping_id = $row['id'];
+        $shipping_name = $row['shipping_name'];
+        //获取配送地区id
+        $rows  = (new \yii\db\Query())
+            ->select(['id'])
+            ->from(ShippingArea::tableName())
+            ->where(['shipping_id'=>$shipping_id])
+            ->all();
+        $all = UtilD::getCol($rows);
+        $in = UtilD::db_create_in(join(',', $all));
+        $conn = \Yii::$app->getDb();
+        $transaction = $conn->beginTransaction();
+        try{
+            $sql1 = "DELETE FROM ".AreaRegion::tableName()." WHERE shipping_area_id ".$in;
+            $sql2 = "DELETE FROM ".ShippingArea::tableName()." WHERE id=".$shipping_id;
+            $sql3 = "DELETE FROM ".Shipping::tableName()." WHERE id=".$shipping_id;
+            $conn->createCommand($sql1)->execute();
+            $conn->createCommand($sql2)->execute();
+            $conn->createCommand($sql3)->execute();
+            $transaction->commit();
+        } catch (\Exception $e){
+            $transaction->rollBack();
+            return false;
+        }
+        //删除上传的非默认快递单
+        if ($row['print_bg'] != '' && !UtilD::is_print_bg_default($row['print_bg'])){
+            @unlink(\Yii::getAlias('@web').DIRECTORY_SEPARATOR.$row['print_bg']);
+        }
+        AdminLog::admin_log(addslashes($shipping_name), 'uninstall','shipping');
+        return true;
     }
 }
