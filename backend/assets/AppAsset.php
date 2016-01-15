@@ -15,7 +15,7 @@ class AppAsset extends AssetBundle{
     
     public $css=[
         'easyui/themes/bootstrap/easyui.css',
-        'easyui/themes/icon.css',
+        'css/icon.css',
         'css/main.css'
     ];
     

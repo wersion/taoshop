@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "{{%area_region}}".
  *
  * @property integer $shipping_area_id
- * @property integer $region_id
+ * @property string $region_area
  */
 class AreaRegion extends \yii\db\ActiveRecord
 {
@@ -26,7 +26,8 @@ class AreaRegion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['shipping_area_id', 'region_id'], 'integer']
+            [['shipping_area_id'], 'integer'],
+            [['region_area'],'string','max'=>32],
         ];
     }
 
@@ -37,7 +38,7 @@ class AreaRegion extends \yii\db\ActiveRecord
     {
         return [
             'shipping_area_id' => Yii::t('app', 'Shipping Area ID'),
-            'region_id' => Yii::t('app', 'Region ID'),
+            'region_area' => Yii::t('app', 'Region Area'),
         ];
     }
 }

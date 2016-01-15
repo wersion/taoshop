@@ -99,12 +99,6 @@ class Area extends \yii\db\ActiveRecord
     }
     
     
-    public function FindAreaAll(){
-      // $data = $this->getAllArea();
-       
-    }
-    
-    
     private function getAllArea(){
         $key = md5(self::CACHE_KEY.'AllData');
         $allArea = UtilD::getCache(__CLASS__, $key);

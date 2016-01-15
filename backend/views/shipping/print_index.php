@@ -10,6 +10,7 @@ use yii\helpers\Url;
 <meta name="robots" content="noindex, nofollow">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Cache-Control" content="public">
+<script type="text/javascript" src="/js/jq.js"></script>
 <script type="text/javascript" src="/js/utils.js"></script>
 <script type="text/javascript">
 <!--
@@ -153,8 +154,8 @@ function recovery_default()
   }
 
   the_form.target = '_parent';
-  the_form.act.value = 'recovery_default_template';
-
+  //the_form.act.value = 'recovery_default_template';
+  the_form.action = '<?=Url::to('/shipping/recovery-default-template') ?>';
   the_form.submit();
 
   return true;
@@ -175,8 +176,8 @@ function save()
   the_form.config_lable.value = call_flash('lable_Location_info', '');
 
   the_form.target = '_parent';
-  the_form.act.value = 'do_edit_print_template';
-
+  //the_form.act.value = 'do_edit_print_template';
+  the_form.action = '<?=Url::to('/shipping/do-edit-print-template') ?>';
   the_form.submit();
 
   return true;
@@ -198,9 +199,13 @@ function bg_del()
   {
     return false; //中止执行
   }
-
-  var params = 'shipping=' + the_form.shipping.value;
-  Ajax.call('<?=Url::toRoute(['/shipping/print-del','is_ajax'=>1])?>', params, bg_del_call_back, 'GET', 'JSON');
+  $.ajax({
+	    url:'<?=Url::toRoute(['/shipping/print-del','is_ajax'=>1])?>',
+	    dataType:'json',
+	    type:'GET',
+	    data:'shipping='+the_form.shipping.value,
+	    success:bg_del_call_back
+	  });
 
 }
 

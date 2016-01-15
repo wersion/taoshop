@@ -22,7 +22,15 @@ return [
     'del_shipping_bg'=> '删除打印单图片',
     'save_setting'=> '保存设置',
     'recovery_default'=> '恢复默认',
-    
+    'byArea' => '所辖地区',
+    'shipping_area_name'=>'配送区域名称',
+    'fee_compute_mode'=>'费用计算方式',
+    'fee_by_weight' => '按重量计算',
+    'fee_by_number' => '按商品件数计算',
+    'base_fee'=>'1000克以内费用',
+    'step_fee'=>'续重每1000克或其零数的费用',
+    'free_money'=>'免费额度',
+    'item_fee'=>'单件商品费用',
     /* 快递单部分 */
     //'lable_select_notice'=> '--选择插入标签--',
     'lable_box'=>[

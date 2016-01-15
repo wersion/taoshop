@@ -284,7 +284,8 @@ class UtilD {
        $cols = [];
        if (!is_array($rows) || !count($rows)) return $cols;
        foreach ($rows as $val){
-           $cols[] = $val['id'];
+           //$cols[] = $val['id'];
+           $cols[] = $val[0];
        }
        return $cols;
    }

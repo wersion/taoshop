@@ -29,7 +29,8 @@ class ShippingController extends BackendBaseController
                     'uninstall' => ['GET'],
                     'edit-print-template' => ['GET'],
                     'do-edit-print-template' => ['POST','GET'],
-                    'print-del' => ['GET']
+                    'print-del' => ['GET'],
+                    'recovery-default-template'=>['GET','POST']
                  ]
              ]
          ];
@@ -70,7 +71,7 @@ class ShippingController extends BackendBaseController
                     $modules[$i]['is_insure']  = 1;
                 }
                 $modules[$i]['manage'] = '<a href="'.Url::toRoute(['/shipping/uninstall','code'=>$modules[$i]['code']]).'">'.\Yii::t('shipping', 'uninstall').'</a>';
-                $modules[$i]['manage'] .= ' | <a href="'.Url::toRoute(['/shippingArea/list','shipping'=>$row['id']]).'">'.\Yii::t('shipping', 'shipping_area').'</a>';
+                $modules[$i]['manage'] .= ' | <a href="'.Url::toRoute(['/shipping-area/list','shipping'=>$row['id']]).'">'.\Yii::t('shipping', 'shipping_area').'</a>';
                 $modules[$i]['manage'] .= ' | <a href="'.Url::toRoute(['/shipping/edit-print-template','shipping'=>$row['id']]).'">'.\yii::t('shipping', 'shipping_print_edit').'</a>';
             }
             else{
@@ -234,6 +235,30 @@ class ShippingController extends BackendBaseController
             }
         }
     }
+    
+    /*
+     * 恢复默认
+     */
+    public function actionRecoveryDefaultTemplate(){
+        $shipping_id = \yii::$app->request->post('shipping',0);
+        $sql = "SELECT shipping_code FROM ".Shipping::tableName()." WHERE id={$shipping_id}";
+        $code = \yii::$app->getDb()->createCommand($sql)->queryScalar();
+        
+        
+        $set_modules = true;
+        include_once(\yii::getAlias('@ext').'/shipping/'.$code.'.php');
+        
+        $sql = "UPDATE ".Shipping::tableName()." SET print_bg='".addslashes($modules[0]['print_bg'])."',config_lable='".addslashes($modules[0]['config_lable'])."' WHERE shipping_code='{$code}' LIMIT 1";
+        \yii::$app->getDb()->createCommand($sql)->execute();
+        
+        $this->redirect(['/shipping/edit-print-template','shipping'=>$shipping_id]);
+    }
+    
+    
+    
+    
+    
+    
 }
 
 ?>

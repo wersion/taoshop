@@ -1,7 +1,7 @@
 <?php 
 use yii\helpers\Url;
 ?>
-<table id="listdata"  class="easyui-datagrid" title="配送方式" 
+<table id="shippinglist"  class="easyui-datagrid" title="配送方式" 
 				data-options="rownumbers:true,singleSelect:true,pagination:true,url:'<?= Url::to('/shipping/ajax-get')?>' ">
 			<thead>
 				<tr>

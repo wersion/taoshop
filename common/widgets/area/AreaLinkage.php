@@ -38,7 +38,7 @@ class AreaLinkage extends Widget{
             throw new \yii\base\InvalidConfigException;
         }
         if ('backend' == $this->type){
-            $this->url = 'areacode/get_areacode';
+            $this->url = '/areacode/get-areacode';
         }
     }
     

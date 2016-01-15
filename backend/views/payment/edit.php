@@ -63,8 +63,8 @@ use yii\helpers\Url;
                         <?=Html::hiddenInput("is_cod",$pay['is_cod']) ?>
                         <?=Html::hiddenInput("is_online",$pay['is_online']) ?>
                         <div style="text-align:left;padding:5px;line-height:50px">
-                	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" data-options="iconCls:'icon-save'">&nbsp;&nbsp;提交&nbsp;&nbsp; </a>
-                	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" data-options="iconCls:'icon-undo'"> &nbsp;&nbsp;重设 &nbsp;&nbsp;</a>
+                	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" data-options="iconCls:'icon-save'">&nbsp;&nbsp;<?=Yii::t('app', 'button_submit')?>&nbsp;&nbsp; </a>
+                	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" data-options="iconCls:'icon-undo'"> &nbsp;&nbsp;<?=Yii::t('app', 'button_reset')?> &nbsp;&nbsp;</a>
                         </div>
                     </td>
                 </tr>
