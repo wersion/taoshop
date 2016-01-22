@@ -19,4 +19,6 @@ return [
     'label_city' => '城市',
     'label_district'=>'区/县',
     'select_please'=>'请选择...',
+    'button_submit'=>'提交',
+    'button_reset'=>'重置',
 ];

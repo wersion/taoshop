@@ -14,7 +14,6 @@ use common\models\common\models;
 use yii\helpers\FileHelper;
 class ShippingController extends BackendBaseController
 {
-    public $enableCsrfValidation = false;
     
     
     public function  behaviors()

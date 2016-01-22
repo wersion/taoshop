@@ -77,13 +77,13 @@ class ShopConfig extends \yii\db\ActiveRecord
     */
     public static function get_settigs($groups=null,$excludes=null){
         $config_groups = $excludes_groups = '';
-        if (!count($groups)){
+        if (!empty($groups)){
             foreach ($groups as $key=>$val){
                 $config_groups .= " AND (id='$val' OR parent_id='$val')";
             }
         }
         
-        if (!count($excludes)){
+        if (!empty($excludes)){
             foreach ($excludes as $key=>$val){
                 $excludes_groups .= " AND (parent_id<>'$val' AND id<>'$val')";
             }

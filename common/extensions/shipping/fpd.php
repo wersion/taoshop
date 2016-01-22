@@ -1,5 +1,4 @@
 <?php
-namespace common\extensions\shipping;
 /* 模块的基本信息 */
 if (isset($set_modules) && $set_modules == TRUE)
 {

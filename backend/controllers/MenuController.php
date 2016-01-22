@@ -36,7 +36,13 @@ class MenuController extends BackendBaseController
                             'menuid' =>'004',
                             'menuname'=>'邮件服务器配置',
                             'icon' => 'icon-sys',
-                            'url' => Url::to('/config/emailSettings')
+                            'url' => Url::to('/config/mail-settings')
+                        ],
+                        [
+                        'menuid' =>'005',
+                        'menuname'=>'友情连接',
+                        'icon' => 'icon-sys',
+                        'url' => Url::to('/friend-link/list')
                         ],
                     ] 
                 ],

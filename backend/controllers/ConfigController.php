@@ -8,10 +8,11 @@ use common\models\ShopConfig;
 use common\component\UtilD;
 use common\models\AdminLog;
 use yii\filters\VerbFilter;
+use yii;
+use yii\helpers\Url;
 
 class ConfigController extends BackendBaseController
 {
-    public $layout = "content";
     
     public function  behaviors()
     {
@@ -19,8 +20,9 @@ class ConfigController extends BackendBaseController
             'verbs' =>[
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'listedit' => ['get'],
-                    'post'     => ['post'],
+                    'listedit' => ['GET'],
+                    'post'     => ['POST'],
+                    'mail-settings' => ['GET'],
                 ]
             ]
         ];
@@ -31,9 +33,15 @@ class ConfigController extends BackendBaseController
         
         $group_list = ShopConfig::get_settigs([],[5]);
         return $this->render('edit',['group_list'=>$group_list]);
-        //return $this->render('listedit',['group_list'=>$group_list]);
     }
     
+    /*
+     * 邮箱服务器配置
+     */
+    public function actionMailSettings(){
+        $arr = ShopConfig::get_settigs([6]);
+        return $this->render('shop_config_mail_settings',['cfg'=>$arr[6]['vars']]);
+    }
     
     /*
      * 保存商城配置参数
@@ -41,6 +49,7 @@ class ConfigController extends BackendBaseController
     public function actionPost(){
         $allow_file_types = ['jpg','jpeg','png','gif','bmp','swf'];
         $values = \yii::$app->request->post('value',[]);
+        $type = \Yii::$app->request->post('type','');
         /* 保存变量值 */
         $count = count($values);
         $arr = [];
@@ -127,10 +136,14 @@ class ConfigController extends BackendBaseController
             $sql = "UPDATE ".ShopConfig::tableName()." SET value='".  serialize($invoice)."' WHERE code ='invoice_type'";
             \yii::$app->db->createCommand($sql)->execute();
         }
-        AdminLog::admin_log('edit', 'shop_config');
+        AdminLog::admin_log('','edit', 'shop_config');
         /* 清除缓存 */
         ShopConfig::clearCache();
-        return $this->redirect(\yii\helpers\Url::to('/config/listedit'));
+        if ($type == 'mail_setting'){
+            return $this->redirect(Url::to('/config/mail-settings'));
+        }else{
+            return $this->redirect(\yii\helpers\Url::to('/config/listedit'));
+        }
     }
 
 }

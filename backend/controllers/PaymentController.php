@@ -13,7 +13,6 @@ use common\models\AdminLog;
 
 class PaymentController extends BackendBaseController
 {
-    public $enableCsrfValidation = false;
     
     public function  behaviors()
     {

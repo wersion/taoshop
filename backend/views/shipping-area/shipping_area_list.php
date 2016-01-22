@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 ?>
 <table id="shippingarealist"  class="easyui-datagrid" title="配送区域" 
-				data-options="toolbar: '#shippingarea-buttons',rownumbers:true,singleSelect:true,pagination:true,url:'<?= Url::toRoute(['/shipping-area/ajax-get','shipping'=>$shipping_id])?>' ">
+				data-options="toolbar: '#shippingarea-buttons',fitColumns:true,rownumbers:true,singleSelect:true,pagination:true,url:'<?= Url::toRoute(['/shipping-area/ajax-get','shipping'=>$shipping_id])?>' ">
 			<thead>
 				<tr>
 					<th data-options="field:'name',align:'center'" width="10%">编号</th>
@@ -12,6 +12,6 @@ use yii\helpers\Url;
 				</tr>
 			</thead>
 </table>
-<div id="shippingarea-buttons" style="margin: 4px">  
+<div id="shippingarea-buttons" style="padding: 4px">  
 	<a href="#" class="easyui-linkbutton" iconCls="icon-add2" onclick="javascript:location.href='<?=Url::toRoute(['/shipping-area/add','shipping'=>$shipping_id])?>'">新建配送区域</a>  
 </div>

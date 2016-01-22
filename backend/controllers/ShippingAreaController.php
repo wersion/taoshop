@@ -9,7 +9,6 @@ use yii\helpers\Json;
 use common\models\Shipping;
 class ShippingAreaController extends BackendBaseController
 {
-    public $enableCsrfValidation = false;
     
     public function behaviors()
     {

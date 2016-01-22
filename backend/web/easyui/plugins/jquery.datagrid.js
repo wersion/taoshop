@@ -1612,7 +1612,7 @@ opts.queryParams=_18d;
 }
 var _18e=$.extend({},opts.queryParams);
 if(opts.pagination){
-$.extend(_18e,{page:opts.pageNumber||1,rows:opts.pageSize});
+$.extend(_18e,{page:opts.pageNumber||1,rows:opts.pageSize,_csrf:$('meta[name="csrf-token"]').attr("content")});
 }
 if(opts.sortName){
 $.extend(_18e,{sort:opts.sortName,order:opts.sortOrder});
