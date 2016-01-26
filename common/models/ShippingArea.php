@@ -6,6 +6,7 @@ use Yii;
 use common\component\UtilD;
 use yii\helpers\Url;
 use yii\data\Pagination;
+use common\component\ActiveRecordD;
 
 /**
  * This is the model class for table "{{%shipping_area}}".
@@ -15,7 +16,7 @@ use yii\data\Pagination;
  * @property integer $shipping_id
  * @property string $configure
  */
-class ShippingArea extends \yii\db\ActiveRecord
+class ShippingArea extends ActiveRecordD
 {
     /**
      * @inheritdoc

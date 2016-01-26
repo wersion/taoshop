@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use common\component\UtilD;
+use common\component\ActiveRecordD;
 define('SHIP_LIST', 'cac|city_express|ems|flat|fpd|post_express|post_mail|presswork|sf_express|sto_express|yto|zto');
 /**
  * This is the model class for table "{{%shipping}}".
@@ -22,7 +23,7 @@ define('SHIP_LIST', 'cac|city_express|ems|flat|fpd|post_express|post_mail|pressw
  * @property integer $shipping_order
  * @property integer $create_time
  */
-class Shipping extends \yii\db\ActiveRecord
+class Shipping extends ActiveRecordD
 {
     /**
      * @inheritdoc

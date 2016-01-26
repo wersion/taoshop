@@ -12,6 +12,8 @@ use yii;
 use common\component\BackendBaseController;
 use backend\models\LoginForm;
 use yii\web\View;
+use yii\helpers\Json;
+use common\component\UtilD;
 /**
  * Description of AdminController
  *
@@ -58,17 +60,17 @@ class AdminController extends BackendBaseController {
         $model->verifyCode = $_POST['verifyCode'];
         
         if ($model->login()){
-            return $this->goHome();
+            exit(UtilD::handleResult(true, '登陆成功'));
         }
         else{
-            return $this->redirect(['/admin/login']);
+            exit(UtilD::handleResult(false,'登陆失败，账号或密码错误'));
         }
     }
     
     
     public function actionLogout(){
         \Yii::$app->user->logout(true);
-        return $this->goHome();
+        return $this->redirect(['/admin/login']);
     }
     
     

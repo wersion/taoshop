@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\component\ActiveRecordD;
 
 /**
  * This is the model class for table "{{%area_region}}".
@@ -10,7 +11,7 @@ use Yii;
  * @property integer $shipping_area_id
  * @property string $region_area
  */
-class AreaRegion extends \yii\db\ActiveRecord
+class AreaRegion extends ActiveRecordD
 {
     /**
      * @inheritdoc

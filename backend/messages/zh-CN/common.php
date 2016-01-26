@@ -1,0 +1,23 @@
+<?php
+return [
+    'directory_readonly' => '目录 % 不存在或不可写',
+    'invalid_upload_image_type' => '不是允许的图片格式',
+    'upload_failure' => '文件 %s 上传失败。',
+    'missing_gd' => '没有安装GD库',
+    'missing_orgin_image' => '找不到原始图片 %s ',
+    'nonsupport_type' => '不支持该图像格式 %s ',
+    'creating_failure' => '创建图片失败',
+    'writting_failure' => '图片写入失败',
+    'empty_watermark' => '水印文件参数不能为空',
+    'missing_watermark' => '找不到水印文件%s',
+    'create_watermark_res' => '创建水印图片资源失败。水印图片类型为%s',
+    'create_origin_image_res' => '创建原始图片资源失败，原始图片类型%s',
+    'invalid_image_type' => '无法识别水印图片 %s ',
+    'file_unavailable' => '文件 %s 不存在或不可读',
+    'add' => '添加',
+    'add_error' => '添加失败',
+    'go_back'=>'返回',
+    'attradd_succed'=> '添加成功',
+    'continue_add'=>'继续添加',
+    'back_list' => '返回列表',
+];

@@ -1,6 +1,7 @@
 <?php
 namespace common\component;
 
+use yii\helpers\Json;
 /**
  * help tools
  *
@@ -18,6 +19,45 @@ class UtilD {
             'status' => $status?true:false,
             'message'=> $message
         ],JSON_FORCE_OBJECT);
+    }
+    
+    /**
+     *  格式化消息 true success false fail
+     **/
+    public static function handleResult($code, $result, $json = true) {
+        if($json){
+            return Json::encode(['key' => $code, 'keyMain' => $result]);
+        }
+        return ['key' => $code, 'keyMain' => $result];
+    }
+    
+    /**
+     * 检查图片类型
+     * @param   string  $img_type   图片类型
+     * @return  bool
+     */
+    public static function check_img_type($img_type)
+    {
+        return $img_type == 'image/pjpeg' ||
+               $img_type == 'image/x-png' ||
+               $img_type == 'image/png'   ||
+               $img_type == 'image/gif'   ||
+               $img_type == 'image/jpeg';
+    }
+    
+    /**
+     * 生成随机的数字串
+     * @return string
+     */
+    public static function random_filename()
+    {
+        $str = '';
+        for($i = 0; $i < 9; $i++)
+        {
+            $str .= mt_rand(0, 9);
+        }
+
+        return time() . $str;
     }
     
     public static function getCache($class,$key){
@@ -110,6 +150,27 @@ class UtilD {
         }
         $result  .= "</script>";
         echo $result;
+    }
+    
+    /**
+     *  返回文件后缀名，如‘.php’
+     *
+     * @access  public
+     * @param
+     *
+     * @return  string      文件后缀名
+     */
+    public static function get_filetype($path)
+    {
+        $pos = strrpos($path, '.');
+        if ($pos !== false)
+        {
+            return substr($path, $pos);
+        }
+        else
+        {
+            return '';
+        }
     }
     
     /**

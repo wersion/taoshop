@@ -21,4 +21,7 @@ return [
     'select_please'=>'请选择...',
     'button_submit'=>'提交',
     'button_reset'=>'重置',
+    'go_back' => '返回',
+    'auto_redirection'=>'自动跳转',
+    'is_repead' => '已存在',
 ];

@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use common\component\UtilD;
 use yii\db\Query;
+use common\component\ActiveRecordD;
 
 /**
  * This is the model class for table "{{%area}}".
@@ -24,7 +25,7 @@ use yii\db\Query;
  * @property integer $sta
  * @property string $tel_code
  */
-class Area extends \yii\db\ActiveRecord
+class Area extends ActiveRecordD
 {
     const CACHE_KEY = 'areaCode_key';
 

@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\Html;
+use common\component\ActiveRecordD;
 /**
  * This is the model class for table "{{%admin_log}}".
  *
@@ -13,7 +14,7 @@ use yii\helpers\Html;
  * @property string $ip_address
  * @property integer $log_time
  */
-class AdminLog extends \yii\db\ActiveRecord
+class AdminLog extends ActiveRecordD
 {
     /**
      * @inheritdoc

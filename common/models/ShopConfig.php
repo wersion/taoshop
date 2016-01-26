@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use common\component\UtilD;
+use common\component\ActiveRecordD;
 /**
  * This is the model class for table "{{%shop_config}}".
  *
@@ -17,7 +18,7 @@ use common\component\UtilD;
  * @property integer $sort_order
  * @property string $notice
  */
-class ShopConfig extends \yii\db\ActiveRecord
+class ShopConfig extends ActiveRecordD
 {
     const CACHE_KEY = 'shopconfig_key';
 

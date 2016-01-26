@@ -3,8 +3,8 @@
 namespace backend\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use common\component\ActiveRecordD;
 
 /**
  * This is the model class for table "{{%admin}}".
@@ -24,7 +24,7 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $create_time
  */
-class Admin extends ActiveRecord implements IdentityInterface
+class Admin extends ActiveRecordD implements IdentityInterface
 {
     const STATUS_DISABLE = 0;
     const STATUS_ACTIVE = 1;

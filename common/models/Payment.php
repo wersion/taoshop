@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\db\Query;
+use common\component\ActiveRecordD;
 
 /**
  * This is the model class for table "{{%payment}}".
@@ -20,7 +21,7 @@ use yii\db\Query;
  * @property integer $is_online
  * @property integer $create_time
  */
-class Payment extends \yii\db\ActiveRecord
+class Payment extends ActiveRecordD
 {
     /**
      * @inheritdoc
