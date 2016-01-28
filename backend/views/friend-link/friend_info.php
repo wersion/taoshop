@@ -49,8 +49,8 @@ use yii;
               <td style="height:60px">
                <?=Html::input("submit","submit",Yii::t('app', 'button_submit'),['class'=>'button'])?>
                 <?=Html::input("reset","reset",Yii::t("app", 'button_reset'),['class'=>'button'])?>
-                <input name="id" type="hidden" value="<?php isset($arrLink['id'])?$arrLink['id']:0;?>"/>
-                <input name="type" type="hidden" value="<?php isset($type)?$type:''?>" />
+                <input name="id" type="hidden" value="<?= isset($arrLink['id'])?$arrLink['id']:0;?>"/>
+                <input name="type" type="hidden" value="<?= isset($type)?$type:''?>" />
               </td>
             </tr>
          </table>

@@ -34,7 +34,7 @@ class FriendLink extends ActiveRecordD
         return [
             [['link_name', 'link_url'], 'required'],
             [['show_order', 'create_time'], 'integer'],
-            [['link_name','link_url'],'required','on'=>['add']],
+            [['link_name','link_url'],'required','on'=>['add','update']],
             [['link_name', 'link_url', 'link_logo'], 'string', 'max' => 255]
         ];
     }
@@ -79,5 +79,14 @@ class FriendLink extends ActiveRecordD
         $model->setAttributes($params);
         $model->create_time = time();
         return $model->insert();
+    }
+    
+    /*
+     * 修改内容
+     */
+    public static function modRowFriendLink($id,$params){
+        $model = static::findOne($id);
+        $model->setAttributes($params);
+        return $model->save();
     }
 }

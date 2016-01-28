@@ -11,6 +11,7 @@ use common\models\AdminLog;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\StringHelper;
+use common\component\UtilD;
 
 class FriendLinkController extends BackendBaseController
 {
@@ -25,6 +26,7 @@ class FriendLinkController extends BackendBaseController
                     'add' => ['GET'],
                     'insert' => ['POST'],
                     'edit' => ['GET'],
+                    'delete-link'=> ['GET'],
                 ]
              ]
         ];
@@ -136,7 +138,69 @@ class FriendLinkController extends BackendBaseController
      * 保存修改
      */
     public function actionUpdate() {
+        $id = (int)\yii::$app->request->post('id',0);
+        $show_order = (int)\Yii::$app->request->post('show_order',0);
+        $link_name = Html::decode(trim(\yii::$app->request->post('link_name','')));
+        $url_logo = \Yii::$app->request->post('url_logo','');
+        $link_url = \Yii::$app->request->post('link_url','');
         
+        if ((isset($_FILES['link_img']['error']) && $_FILES['link_img']['error'] == 0) ||
+            (!isset($_FILES['link_img']['error']) && isset($_FILES['link_img']['tmp_name']) && $_FILES['link_img']['tmp_name'] != 'none')){
+            $image = new ImageD();
+            $img_up_info = @basename($image->UploadImage($_FILES['link_img'],'afficheimg'));
+            $link_logo = "/images/afficheimg/".$img_up_info;
+        }
+        elseif (!empty($url_logo)){
+            $link_logo = $url_logo;
+        }
+        else{
+            $link_logo = "";
+        }
+        //如果有新上传的图片，删除原来的图片
+        if (!empty($img_up_info))
+        {
+            $old_logo = FriendLink::find()->select(['link_logo'])->where('id='.$id)->column();
+            if ((strpos($old_logo, 'http://') === false) && (strpos($old_logo, 'https://') === false)){
+                $image_name  = basename($old_logo);
+                @unlink(\Yii::getAlias('static').'/images/afficheimg/'.$image_name);
+            }
+        }
+        
+        /* 如果没有http:// 补上 */
+        if (strpos($link_url, 'http://') === false && strpos($link_url, 'https://') === false){
+            $link_url = 'http://'.trim($link_url);
+        }
+        else{
+            $link_url = trim($link_url);
+        }
+        
+        $status = FriendLink::modRowFriendLink($id,['link_name'=>$link_name,'link_url'=>$link_url,'link_logo'=>$link_logo,'show_order'=>$show_order]);
+        if ($status){
+            AdminLog::admin_log($link_name, 'edit','friendlink');
+        }
+        $link[] = ['text'=>\Yii::t('common', 'back_list'),'href'=>Url::to('/friend-link/list')];
+        $this->system_msg(\yii::t('common', 'edit')."&nbsp;".Html::encode($link_name)."&nbsp;".\Yii::t('common', 'attradd_succed'),0,$link);
+    }
+    
+    /*
+     * 删除一条链接
+     */
+    public function actionDeleteLink() {
+        $id = (int)\Yii::$app->request->get('id',0);
+        if (!$id){
+            exit(UtilD::handleResult(false, '非法提交'));
+        }
+        $model = FriendLink::find()->where('id='.$id)->one();
+        
+        if ((strpos($model['link_logo'], 'http://') === false) && (strpos($model['link_logo'], 'https://') === false))
+        {
+            $img_name = basename($model['link_logo']);
+            @unlink(\Yii::getAlias('static').'/images/afficheimg/'.$img_name);
+        }
+        
+        $model->delete();
+        AdminLog::admin_log('', 'remove','friendlink');
+        exit(UtilD::handleResult(true, '删除成功'));
     }
 }
 

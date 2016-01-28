@@ -17,7 +17,8 @@ return [
     'add' => '添加',
     'add_error' => '添加失败',
     'go_back'=>'返回',
-    'attradd_succed'=> '添加成功',
+    'attradd_succed'=> '操作成功',
     'continue_add'=>'继续添加',
     'back_list' => '返回列表',
+    'edit' => '修改',
 ];

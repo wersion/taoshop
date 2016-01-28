@@ -44,6 +44,12 @@ class MenuController extends BackendBaseController
                         'icon' => 'icon-sys',
                         'url' => Url::to('/friend-link/list')
                         ],
+                        [
+                        'menuid' =>'006',
+                        'menuname'=>'自定义导航',
+                        'icon' => 'icon-sys',
+                        'url' => Url::to('/navigator/list')
+                        ],
                     ] 
                 ],
                 [
